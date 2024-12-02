@@ -17,8 +17,8 @@ const LoginNavbar = ({ menu }) => {
         <div className="container mx-auto flex justify-between items-center">
           <Link to='/'>
             <h1 className='font-bold text-sm sm:text-xl flex'>
-              <span className='text-slate-500'>House</span>
-              <span className='text-slate-700'>Rent</span>
+              <span className='text-slate-500'>Prime</span>
+              <span className='text-slate-700'>Rental</span>
             </h1>
           </Link>
 

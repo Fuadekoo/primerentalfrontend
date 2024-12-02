@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, message } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import axiosInstance from '../helpers/axiousInstance'; // Correct import
 import { HideLoading, ShowLoading } from '../redux/alertSlice';
 import Navbar from '../components/Navbar';
@@ -10,13 +10,14 @@ import keyhouse from '../images/keyhouse.jpg';
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate(); 
+  const loading = useSelector((state) => state.alerts.loading);
 
   const onFinish = async (values) => {
     try {
+      dispatch(ShowLoading());
       // First, fetch the CSRF cookie
       await axiosInstance.get('/sanctum/csrf-cookie');
 
-      dispatch(ShowLoading());
       const response = await axiosInstance.post("/login", values);
 
       if (response.data.success) {
@@ -77,8 +78,9 @@ const Login = () => {
               <button
                 className='bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80'
                 type='submit'
+                disabled={loading}
               >
-                Login
+                {loading ? 'Loading...' : 'Login'}
               </button>
             </Form>
             <div className='flex gap-2 mt-5'>

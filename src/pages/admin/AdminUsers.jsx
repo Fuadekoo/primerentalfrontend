@@ -24,11 +24,6 @@ const AdminUsers = () => {
         "Date",
         ""
     ];
-    // Pagination states
-    const [currentPage, setCurrentPage] = useState(1);
-    
-    const usersPerPage = 3; // Adjust this value for the number of users per page
-    const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
 
     const handleSearch = async (e) => {
         e.preventDefault();
@@ -38,13 +33,14 @@ const AdminUsers = () => {
             setCurrentPage(1); // Reset to first page on new search
         } catch (error) {
             console.error("Error fetching users:", error);
+            message.error("Error fetching users");
         }
     };
 
     const handleBlockUnblock = async (userId, isBlocked) => {
         try {
             await axiosInstance.put(`/toggleBlockUser/${userId}/block`, { isBlocked: !isBlocked });
-            const response = await axiosInstance.get('/api/getUsers');
+            const response = await axiosInstance.get('/getUsers');
             setUsers(response.data);
 
             const updatedBlockStatus = {};
@@ -54,6 +50,7 @@ const AdminUsers = () => {
             setBlockStatus(updatedBlockStatus);
         } catch (error) {
             console.error("Error updating block status:", error);
+            message.error("Error updating block status");
         }
     };
 
@@ -70,6 +67,7 @@ const AdminUsers = () => {
                 setFilteredUsers(response.data); // Initialize filtered users
             } catch (error) {
                 console.error("Error fetching users:", error);
+                message.error("Error fetching users");
             }
         };
         fetchUsers();
@@ -96,6 +94,11 @@ const AdminUsers = () => {
         ));
         setCurrentPage(1); // Reset to first page when search term changes
     }, [searchTerm, users]);
+
+    // Pagination states
+    const [currentPage, setCurrentPage] = useState(1);
+    const usersPerPage = 3; // Adjust this value for the number of users per page
+    const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
 
     // Get current users based on pagination
     const indexOfLastUser = currentPage * usersPerPage;
@@ -169,7 +172,7 @@ const AdminUsers = () => {
                     </thead>
                     <tbody>
                         {currentUsers.map(
-                            ({ id, name, email, phone, avatar, role,  isBlocked, created_at   }, index) => {
+                            ({ id, name, email, phone, avatar, role, isBlocked, created_at }, index) => {
                                 const isLast = index === currentUsers.length - 1;
                                 const classes = isLast
                                     ? "p-2"

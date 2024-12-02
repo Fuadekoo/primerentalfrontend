@@ -14,6 +14,10 @@ import AdminUsers from "./pages/admin/AdminUsers";
 import PropertyManage from "./pages/admin/PropertyManage";
 import Dashboard from "./pages/admin/Dashboard";
 import ChatReply from "./pages/admin/ChatReply";
+import HomeType from "./pages/admin/HomeType";
+import AddHomeType from "./pages/admin/AddHomeType";
+import EditHomeType from "./pages/admin/EditHomeType";
+import AddProperty from "./pages/admin/AddProperty";
 
 function App() {
   const {Loading} = useSelector(state=>state.alerts)
@@ -26,7 +30,11 @@ function App() {
     {/* <Route path="/location" element={<ProtectedRoute><Location/></ProtectedRoute>}/> */}
     <Route path="/dashboard" element={<ProtectedRoute><Dashboard/></ProtectedRoute>}/>
     <Route path="/manage/users" element={<ProtectedRoute><AdminUsers/></ProtectedRoute>}/>
+    <Route path="/manage/hometype" element={<ProtectedRoute><HomeType/></ProtectedRoute>}/>
+    <Route path="/add-hometype" element={<ProtectedRoute><AddHomeType/></ProtectedRoute>}/>
+    <Route path="/edit-hometype/:id" element={<ProtectedRoute><EditHomeType/></ProtectedRoute>}/>
     <Route path="/manage/property" element={<ProtectedRoute><PropertyManage/></ProtectedRoute>}/>
+    <Route path="/add-property" element={<ProtectedRoute><AddProperty/></ProtectedRoute>}/>
     <Route path="/admin/chat" element={<ProtectedRoute><ChatReply/></ProtectedRoute>}/>
      
 

@@ -17,9 +17,9 @@ function DefaultLayout({ children }) {
   const adminMenu = [
     { name: "Home", path: "/admin/home" },
     { name: "Dashboard", path: "/dashboard" },
-    { name: "AllUser", path: "/manage/users" },
+    { name: "Users", path: "/manage/users" },
     { name: "HomeType", path: "/manage/hometype" },
-    { name: "AllProperty", path: "/manage/property" },
+    { name: "Property", path: "/manage/property" },
     { name: "chat", path: "/admin/chat" },
     { name: "Notification", path: "/admin/notification" },
   ];
