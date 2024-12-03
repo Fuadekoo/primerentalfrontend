@@ -18,6 +18,7 @@ import HomeType from "./pages/admin/HomeType";
 import AddHomeType from "./pages/admin/AddHomeType";
 import EditHomeType from "./pages/admin/EditHomeType";
 import AddProperty from "./pages/admin/AddProperty";
+import BookNow from "./pages/customer/BookNow";
 
 function App() {
   const {Loading} = useSelector(state=>state.alerts)
@@ -40,6 +41,7 @@ function App() {
 
     {/* route for customer */}
     <Route path="/mybooking" element={<ProtectedRoute><MyBooking/></ProtectedRoute>}/>
+    <Route path="/booknow/:id" element={<ProtectedRoute><BookNow/></ProtectedRoute>}/>
 
 
  

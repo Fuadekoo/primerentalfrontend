@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { FaBars, FaTimes, FaShoppingCart } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+
 
 const LoginNavbar = ({ menu }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false); // To toggle burger menu
@@ -9,6 +10,14 @@ const LoginNavbar = ({ menu }) => {
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    console.log('Logout successful');
+    localStorage.removeItem("token");
+    navigate("/login");
   };
 
   return (
@@ -21,6 +30,7 @@ const LoginNavbar = ({ menu }) => {
               <span className='text-slate-700'>Rental</span>
             </h1>
           </Link>
+          <h1 className='text-white'>{user.name}</h1>
 
           {/* Burger Menu Button */}
           <button className='sm:hidden text-2xl' onClick={toggleMenu}>
@@ -39,14 +49,14 @@ const LoginNavbar = ({ menu }) => {
               {user ? (
                 <div className='flex items-center gap-2'>
                   <img className='rounded-full h-7 w-7 object-cover' src={user.avatar} alt='profile' />
-                  <span className='text-white'>{user.name}</span>
+                 
                 </div>
               ) : (
                 <li className='text-white hover:underline p-2 sm:p-0'>Sign In</li>
               )}
             </Link>
             {user && (
-              <li className='text-white hover:underline p-2 sm:p-0 cursor-pointer' onClick={() => console.log('Logout')}>
+              <li className='text-white hover:underline p-2 sm:p-0 cursor-pointer'  onClick={handleLogout}>
                 Logout
               </li>
             )}

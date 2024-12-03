@@ -5,7 +5,7 @@ import { MdLocationOn } from 'react-icons/md';
 const HouseCard = ({ house }) => {
     return (
         <div className="bg-white pt-2 shadow-md hover:shadow-lg transition-shadow overflow-hidden rounded-lg w-full sm:w-[330px]">
-            <Link to={`/booking/${house.id}`}>
+            <Link to={`/booknow/${house.id}`}>
                 <img
                     src={house.image}
                     alt="house-image"

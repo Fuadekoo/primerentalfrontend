@@ -9,7 +9,7 @@ function DefaultLayout({ children }) {
 
   const userMenu = [
     { name: "Home", path: "/user/home" },
-    { name: "Bookings", path: "/user/bookings" },
+    // { name: "Bookings", path: "/user/bookings" },
     {name: "chat", path: "/user/chat"},
     { name: "Notification", path: "/user/notification" },
   ];
