@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState, useCallback } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import axiosInstance from '../../helpers/axiousInstance';
 import { message } from 'antd';
 import { usePopper } from 'react-popper';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 const BookNow = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [property, setProperty] = useState(null);
   const [feedbacks, setFeedbacks] = useState([]);
   const [feedback, setFeedback] = useState('');
@@ -18,24 +20,25 @@ const BookNow = () => {
   const { styles, attributes } = usePopper(referenceElement, popperElement, {
     modifiers: [{ name: 'offset', options: { offset: [10, 10] } }],
   });
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  const fetchProperty = async () => {
+  const fetchProperty = useCallback(async () => {
     try {
       const response = await axiosInstance.get(`/properties/${id}`);
       setProperty(response.data.property);
     } catch (error) {
       message.error('Error fetching property details');
     }
-  };
+  }, [id]);
 
-  const fetchFeedbacks = async () => {
+  const fetchFeedbacks = useCallback(async () => {
     try {
       const response = await axiosInstance.get(`/feedback/${id}`);
       setFeedbacks(response.data.feedback);
     } catch (error) {
       message.error('Error fetching feedbacks');
     }
-  };
+  }, [id]);
 
   const handleFeedbackSubmit = async (e) => {
     e.preventDefault();
@@ -47,6 +50,7 @@ const BookNow = () => {
       message.success('Feedback submitted successfully');
     } catch (error) {
       message.error('Error submitting feedback');
+      console.error('Error details:', error.response ? error.response.data : error.message);
     }
   };
 
@@ -60,31 +64,112 @@ const BookNow = () => {
       message.success(response.data.message);
       setPhoneNumber('');
       setDescription('');
+      navigate('/cart'); // Redirect to cart page
     } catch (error) {
       message.error('Error creating booking');
+      console.error('Error details:', error.response ? error.response.data : error.message);
     }
   };
 
   useEffect(() => {
     fetchProperty();
     fetchFeedbacks();
-  }, [id]);
+  }, [fetchProperty, fetchFeedbacks]);
 
   if (!property) {
     return <div>Loading...</div>;
   }
 
+  const handlePrevImage = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === 0 ? property.images.length - 1 : prevIndex - 1
+    );
+  };
+
+  const handleNextImage = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === property.images.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  // Validate and transform YouTube URL
+  const getYouTubeEmbedUrl = (url) => {
+    try {
+      const urlObj = new URL(url);
+      if (urlObj.hostname.includes('youtube.com') && urlObj.searchParams.get('v')) {
+        return `https://www.youtube.com/embed/${urlObj.searchParams.get('v')}`;
+      }
+      if (urlObj.hostname.includes('youtu.be')) {
+        return `https://www.youtube.com/embed/${urlObj.pathname.slice(1)}`;
+      }
+    } catch {
+      return null;
+    }
+    return null;
+  };
+
+  const youtubeEmbedUrl = getYouTubeEmbedUrl(property.youtube_link);
+
   return (
     <div className="container mx-auto p-4">
       <div className="bg-white shadow-lg rounded-lg overflow-hidden">
-        <img src={property.image} alt={property.title} className="w-full h-64 object-cover" />
+        <div className="flex flex-col md:flex-row">
+          <div className="relative h-[320px] sm:h-[220px] md:h-[500px] w-full md:w-1/3">
+            {property.images && property.images.length > 0 && (
+              <img
+                src={property.images[currentImageIndex]}
+                alt={`property-image-${currentImageIndex}`}
+                className="h-full w-full object-cover"
+              />
+            )}
+            {property.images && property.images.length > 1 && (
+              <>
+                <button
+                  onClick={handlePrevImage}
+                  className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-gray-800 text-white p-1 rounded-full"
+                >
+                  <FaChevronLeft />
+                </button>
+                <button
+                  onClick={handleNextImage}
+                  className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-gray-800 text-white p-1 rounded-full"
+                >
+                  <FaChevronRight />
+                </button>
+              </>
+            )}
+          </div>
+          {youtubeEmbedUrl && (
+            <div className="mt-4 md:mt-0 md:ml-4 md:w-2/3">
+              <h2 className="text-xl font-bold mb-4">Property Video</h2>
+              <div className="aspect-w-16 aspect-h-9">
+                <iframe
+                  className="w-full h-full"
+                  src={youtubeEmbedUrl}
+                  title="YouTube video player"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
+              </div>
+            </div>
+          )}
+        </div>
         <div className="p-4">
           <h1 className="text-2xl font-bold mb-2">{property.title}</h1>
           <p className="text-gray-700 mb-4">{property.description}</p>
           <p className="text-gray-700 mb-4">Location: {property.location}</p>
           <p className="text-gray-700 mb-4">Price: ${property.price}</p>
           <p className="text-gray-700 mb-4">Type: {property.type_id}</p>
-          <p className="text-gray-700 mb-4">Status: {property.status ? 'Active' : 'Not Active'}</p>
+          <p className="text-gray-700 mb-4">
+            Status: {property.status ? 'Active' : 'Not Active'}
+          </p>
+          <button
+            onClick={() => setShowWidget(!showWidget)}
+            className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+          >
+            Book House
+          </button>
         </div>
       </div>
 

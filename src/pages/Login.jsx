@@ -31,7 +31,11 @@ const Login = () => {
       }
     } catch (error) {
       dispatch(HideLoading());
-      message.error(error.message);
+      if (error.response && error.response.data && error.response.data.message) {
+        message.error(error.response.data.message);
+      } else {
+        message.error(error.message);
+      }
     }
   };
 

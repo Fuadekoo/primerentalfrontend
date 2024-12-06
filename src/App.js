@@ -19,6 +19,8 @@ import AddHomeType from "./pages/admin/AddHomeType";
 import EditHomeType from "./pages/admin/EditHomeType";
 import AddProperty from "./pages/admin/AddProperty";
 import BookNow from "./pages/customer/BookNow";
+import EditProperty from "./pages/admin/EditProperty"
+import AdminNotification from "./pages/admin/AdminNotification"
 
 function App() {
   const {Loading} = useSelector(state=>state.alerts)
@@ -36,7 +38,10 @@ function App() {
     <Route path="/edit-hometype/:id" element={<ProtectedRoute><EditHomeType/></ProtectedRoute>}/>
     <Route path="/manage/property" element={<ProtectedRoute><PropertyManage/></ProtectedRoute>}/>
     <Route path="/add-property" element={<ProtectedRoute><AddProperty/></ProtectedRoute>}/>
+    <Route path="/edit-property/:id" element={<ProtectedRoute><EditProperty/></ProtectedRoute>}/>
     <Route path="/admin/chat" element={<ProtectedRoute><ChatReply/></ProtectedRoute>}/>
+    <Route path="/admin/notification" element={<ProtectedRoute><AdminNotification/></ProtectedRoute>}/>
+
      
 
     {/* route for customer */}

@@ -1,5 +1,4 @@
 import { message } from 'antd';
-import axios from 'axios';
 import axiosInstance from '../helpers/axiousInstance';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
