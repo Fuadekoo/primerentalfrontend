@@ -47,6 +47,13 @@ const HouseCard = ({ house }) => {
                             </button>
                         </>
                     )}
+                    <div
+                        className={`absolute top-2 left-2 px-2 py-1 rounded text-white font-bold ${
+                            house.offer_type === 'For Rent' ? 'bg-red-500' : 'bg-green-500'
+                        }`}
+                    >
+                        {house.offer_type}
+                    </div>
                 </div>
                 <div className="p-3 flex flex-col gap-2 w-full">
                     <p className="truncate text-lg font-semibold text-slate-700">{house.title}</p>
@@ -58,14 +65,14 @@ const HouseCard = ({ house }) => {
                     <p className="text-slate-500 mt-2 font-semibold">
                         ${house.price.toLocaleString()}/month
                     </p>
-                    <div className="text-slate-700 flex gap-2">
+                    {/* <div className="text-slate-700 flex gap-2">
                         <div className="font-bold text-xs">
                             {house.bedrooms > 1 ? `${house.bedrooms} beds` : `${house.bedrooms} bed`}
                         </div>
                         <div className="font-bold text-xs">
                             {house.bathrooms > 1 ? `${house.bathrooms} baths` : `${house.bathrooms} bath`}
                         </div>
-                    </div>
+                    </div> */}
                     <div className="pt-1">
                         <button 
                             color="blue" 

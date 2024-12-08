@@ -11,7 +11,7 @@ function Home() {
         <Navbar />  
         <Filter />
         <HousesList />
-      <Footer />
+        <Footer />
     </div>
   );
 }

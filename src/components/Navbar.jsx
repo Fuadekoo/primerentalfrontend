@@ -1,67 +1,179 @@
-import React, { useState } from 'react';
-import { FaBars, FaTimes,FaShoppingCart } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import React, { useState, useRef } from 'react';
+import { FaBars, FaTimes, FaShoppingCart } from 'react-icons/fa';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import ImageSlider from '../components/ImageSlider'; // Adjust the import path as needed
+import { motion, AnimatePresence } from 'framer-motion';
+import { useClickAway } from 'react-use';
 
 const Navbar = () => {
-    const [isMenuOpen, setIsMenuOpen] = useState(false); // To toggle burger menu
-    const { user } = useSelector(state => state.users);
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // To toggle burger menu
+  const { user } = useSelector((state) => state.users);
+  const navigate = useNavigate();
+  const menuRef = useRef(null);
 
-    const toggleMenu = () => {
-        setIsMenuOpen(!isMenuOpen);
-    };
+  // Close menu when clicking outside
+  useClickAway(menuRef, () => setIsMenuOpen(false));
 
-    return (
-        <div>
-            <nav className="bg-green-800 p-4">
-                <div className="container mx-auto flex justify-between items-center">
-                    <Link to='/'>
-                        <h1 className='font-bold text-sm sm:text-xl flex'>
-                            <span className='text-slate-500'>Prime</span>
-                            <span className='text-slate-700'>Rental</span>
-                        </h1>
-                    </Link>
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
-                    {/* Burger Menu Button */}
-                    <button className='sm:hidden text-2xl' onClick={toggleMenu}>
-                        {isMenuOpen ? <FaTimes /> : <FaBars />}
-                    </button>
+  const handleLogout = () => {
+    console.log('Logout successful');
+    localStorage.removeItem('token');
+    navigate('/login');
+  };
 
-                    {/* Menu items (Responsive with hamburger) */}
-                    <ul className={`sm:flex sm:gap-4 ${isMenuOpen ? 'block' : 'hidden'} absolute sm:static left-0 right-0 top-16 bg-green-800 sm:bg-transparent p-4 sm:p-0 z-10`}>
-                        <Link to='/'>
-                            <li className='text-white hover:underline p-2 sm:p-0'>Home</li>
-                        </Link>
+  return (
+    <div>
+      <nav className="bg-gray-800 p-4 border-b-4 border-green-600">
+        <div className="container mx-auto flex justify-between items-center">
+          <Link to="/">
+            <h1 className="font-bold text-sm sm:text-xl flex">
+              <span className="text-slate-500">Prime</span>
+              <span className="text-slate-700">Rental</span>
+            </h1>
+          </Link>
+          <h1 className="text-white hidden sm:block">{user?.name}</h1>
 
-                        <Link to='/contact'>
-                            <li className='text-white hover:underline p-2 sm:p-0'>Contact</li>
-                        </Link>
+          {/* Burger Menu Button */}
+          <button className="sm:hidden text-2xl" onClick={toggleMenu}>
+            {isMenuOpen ? <FaTimes /> : <FaBars />}
+          </button>
 
-                        <Link to='/about'>
-                            <li className='text-white hover:underline p-2 sm:p-0'>About</li>
-                        </Link>
+          {/* Menu items */}
+          <ul className="hidden sm:flex sm:gap-4">
+            <Link to="/">
+              <li className="text-white hover:underline p-2 sm:p-0">Home</li>
+            </Link>
 
-                        <Link to='/profile'>
-                            {user ? (
-                                <img className='rounded-full h-7 w-7 object-cover' src={user.avatar} alt='profile' />
-                            ) : (
-                                <li className='text-white hover:underline p-2 sm:p-0'>Sign In</li>
-                            )}
-                        </Link>
+            <Link to="/contact">
+              <li className="text-white hover:underline p-2 sm:p-0">Contact</li>
+            </Link>
 
-                        {/* Cart Icon */}
-            <Link to='/mybooking'>
-              <li className='text-white hover:underline p-2 sm:p-0'>
+            <Link to="/about">
+              <li className="text-white hover:underline p-2 sm:p-0">About</li>
+            </Link>
+
+            <Link to="/profile">
+              {user ? (
+                <div className="flex items-center gap-2">
+                  <img className="rounded-full h-7 w-7 object-cover" src={user.avatar} alt="profile" />
+                </div>
+              ) : (
+                <li className="text-white hover:underline p-2 sm:p-0">Sign In</li>
+              )}
+            </Link>
+            {user && (
+              <li className="text-white hover:underline p-2 sm:p-0 cursor-pointer" onClick={handleLogout}>
+                Logout
+              </li>
+            )}
+
+            <Link to="/mybooking">
+              <li className="text-white hover:underline p-2 sm:p-0 m-2 hover:text-red-600">
                 <FaShoppingCart />
               </li>
             </Link>
-                    </ul>
-                </div>
-            </nav>
-            {/* <ImageSlider /> */}
+          </ul>
         </div>
-    );
+
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.div
+              ref={menuRef}
+              initial={{ width: 0, opacity: 0 }}
+              animate={{ width: '70%', opacity: 1 }}
+              exit={{ width: 0, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="sm:hidden bg-gray-800 p-4 absolute top-16 right-0 z-10 border-l border-green-600 rounded-l-lg"
+            >
+              <ul className="flex flex-col gap-4">
+                <Link to="/" onClick={() => setIsMenuOpen(false)}>
+                  <motion.li
+                    initial={{ x: 50, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    exit={{ x: 50, opacity: 0 }}
+                    transition={{ delay: 0.1 }}
+                    className="text-white hover:bg-green-600 p-2 rounded border border-gray-600"
+                  >
+                    Home
+                  </motion.li>
+                </Link>
+
+                <Link to="/contact" onClick={() => setIsMenuOpen(false)}>
+                  <motion.li
+                    initial={{ x: 50, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    exit={{ x: 50, opacity: 0 }}
+                    transition={{ delay: 0.2 }}
+                    className="text-white hover:bg-green-600 p-2 rounded border border-gray-600"
+                  >
+                    Contact
+                  </motion.li>
+                </Link>
+
+                <Link to="/about" onClick={() => setIsMenuOpen(false)}>
+                  <motion.li
+                    initial={{ x: 50, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    exit={{ x: 50, opacity: 0 }}
+                    transition={{ delay: 0.3 }}
+                    className="text-white hover:bg-green-600 p-2 rounded border border-gray-600"
+                  >
+                    About
+                  </motion.li>
+                </Link>
+
+                <Link to="/profile" onClick={() => setIsMenuOpen(false)}>
+                  {user ? (
+                    <div className="flex items-center gap-2 text-white hover:bg-green-600 p-2 rounded border border-gray-600">
+                      <img className="rounded-full h-7 w-7 object-cover" src={user.avatar} alt="profile" />
+                    </div>
+                  ) : (
+                    <motion.li
+                      initial={{ x: 50, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      exit={{ x: 50, opacity: 0 }}
+                      transition={{ delay: 0.4 }}
+                      className="text-white hover:bg-green-600 p-2 rounded border border-gray-600"
+                    >
+                      Sign In
+                    </motion.li>
+                  )}
+                </Link>
+                {user && (
+                  <motion.li
+                    initial={{ x: 50, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    exit={{ x: 50, opacity: 0 }}
+                    transition={{ delay: 0.5 }}
+                    className="text-white hover:bg-green-600 p-2 rounded border border-gray-600 cursor-pointer"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </motion.li>
+                )}
+
+                <Link to="/mybooking" onClick={() => setIsMenuOpen(false)}>
+                  <motion.li
+                    initial={{ x: 50, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    exit={{ x: 50, opacity: 0 }}
+                    transition={{ delay: 0.6 }}
+                    className="text-white hover:bg-green-600 p-2 rounded border border-gray-600"
+                  >
+                    <FaShoppingCart />
+                  </motion.li>
+                </Link>
+              </ul>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </nav>
+    </div>
+  );
 };
 
 export default Navbar;

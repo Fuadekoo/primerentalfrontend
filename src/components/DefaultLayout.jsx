@@ -2,26 +2,32 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import LoginNavbar from "./LoginNavbar"; // Adjust the import path as needed
+import { BiHomeAlt2 } from 'react-icons/bi';
+import { FiSearch } from 'react-icons/fi';
+import { IoPricetagsOutline } from 'react-icons/io5';
+import { PiChatCircleBold } from 'react-icons/pi';
+import { FaBell } from 'react-icons/fa';
+import { MdDashboard } from 'react-icons/md';
+import { FaUsers, FaHome } from 'react-icons/fa';
 
 function DefaultLayout({ children }) {
   const navigate = useNavigate();
   const user = useSelector((state) => state.users.user);
 
   const userMenu = [
-    { name: "Home", path: "/user/home" },
-    // { name: "Bookings", path: "/user/bookings" },
-    {name: "chat", path: "/user/chat"},
-    { name: "Notification", path: "/user/notification" },
+    { name: "Home", path: "/myhome", Icon: BiHomeAlt2 },
+    { name: "Chat", path: "/user/chat", Icon: PiChatCircleBold },
+    { name: "Notification", path: "/user/notification", Icon: FaBell },
   ];
 
   const adminMenu = [
-    { name: "Home", path: "/admin/home" },
-    { name: "Dashboard", path: "/dashboard" },
-    { name: "Users", path: "/manage/users" },
-    { name: "HomeType", path: "/manage/hometype" },
-    { name: "Property", path: "/manage/property" },
-    { name: "chat", path: "/admin/chat" },
-    { name: "Notification", path: "/admin/notification" },
+    { name: "Home", path: "/myhome", Icon: BiHomeAlt2 },
+    { name: "Dashboard", path: "/dashboard", Icon: MdDashboard },
+    { name: "Users", path: "/manage/users", Icon: FaUsers },
+    { name: "HomeType", path: "/manage/hometype", Icon: FaHome },
+    { name: "Property", path: "/manage/property", Icon: IoPricetagsOutline },
+    { name: "Chat", path: "/admin/chat", Icon: PiChatCircleBold },
+    { name: "Notification", path: "/admin/notification", Icon: FaBell },
   ];
 
   const menuToBeRendered = user?.role === 'admin' ? adminMenu : userMenu;

@@ -8,7 +8,9 @@ import  Loader  from "./components/Loader";
 import Register  from "./pages/Register";
 import Login  from "./pages/Login";
 import Home from "./pages/Home";
+import AuthHome from "./pages/AuthHome";
 import MyBooking from "./pages/customer/MyBooking";
+import MyCart from "./pages/customer/MyCart"
 import Profile from "./pages/Profile";
 import AdminUsers from "./pages/admin/AdminUsers";
 import PropertyManage from "./pages/admin/PropertyManage";
@@ -21,6 +23,12 @@ import AddProperty from "./pages/admin/AddProperty";
 import BookNow from "./pages/customer/BookNow";
 import EditProperty from "./pages/admin/EditProperty"
 import AdminNotification from "./pages/admin/AdminNotification"
+import Chat from "./components/Chat"; 
+import AdminChat from "./components/AdminChat";
+import PropertyDetail from "./pages/admin/PropertyDetail"
+import CustomerNotification from "./pages/customer/CustomerNotification"
+import Contacts from "./pages/Contacts"
+import About from "./pages/About"
 
 function App() {
   const {Loading} = useSelector(state=>state.alerts)
@@ -39,6 +47,7 @@ function App() {
     <Route path="/manage/property" element={<ProtectedRoute><PropertyManage/></ProtectedRoute>}/>
     <Route path="/add-property" element={<ProtectedRoute><AddProperty/></ProtectedRoute>}/>
     <Route path="/edit-property/:id" element={<ProtectedRoute><EditProperty/></ProtectedRoute>}/>
+    <Route path="/property-detail/:id" element={<ProtectedRoute><PropertyDetail/></ProtectedRoute>}/>
     <Route path="/admin/chat" element={<ProtectedRoute><ChatReply/></ProtectedRoute>}/>
     <Route path="/admin/notification" element={<ProtectedRoute><AdminNotification/></ProtectedRoute>}/>
 
@@ -46,19 +55,27 @@ function App() {
 
     {/* route for customer */}
     <Route path="/mybooking" element={<ProtectedRoute><MyBooking/></ProtectedRoute>}/>
+    <Route path="/cart" element={<ProtectedRoute><MyCart/></ProtectedRoute>}/>
+    <Route path="/user/notification" element={<ProtectedRoute><CustomerNotification/></ProtectedRoute>}/>
     <Route path="/booknow/:id" element={<ProtectedRoute><BookNow/></ProtectedRoute>}/>
 
 
  
     {/* route all user  */}
+
+    <Route path="/contact" element={<PublicRoute><Contacts/></PublicRoute>}/>
     <Route path="/Register" element={<PublicRoute><Register/></PublicRoute>}/>
+    <Route path="/about" element={<PublicRoute><About/></PublicRoute>}/>
     <Route path="/" element={<PublicRoute><Home/></PublicRoute>}/>
+    <Route path="/myhome" element={<ProtectedRoute><AuthHome/></ProtectedRoute>}/>
     <Route path="/Login" element={<PublicRoute><Login/></PublicRoute>}/>
     <Route path="/profile" element={<ProtectedRoute><Profile/></ProtectedRoute>}/>
     {/* <Route path="/about" element={<PublicRoute><About/></PublicRoute>}/> */}
     {/* <Route path="/" element={<PublicRoute><GuestHome/></PublicRoute>}/>  */}
      {/* <Route path="/contact" element={<PublicRoute><Contact/></PublicRoute>}/>  */}
     
+    <Route path="/user/chat" element={<ProtectedRoute><Chat/></ProtectedRoute>}/>
+    <Route path="/admin/chat" element={<ProtectedRoute><AdminChat/></ProtectedRoute>}/>
     </Routes>
     </BrowserRouter>
   </div>

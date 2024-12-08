@@ -1,17 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { FaBars, FaTimes, FaShoppingCart } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useClickAway } from 'react-use';
 
 const LoginNavbar = ({ menu }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false); // To toggle burger menu
   const { user } = useSelector((state) => state.users);
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
   const navigate = useNavigate();
+  const menuRef = useRef(null);
+
+  // Close menu when clicking outside
+  useClickAway(menuRef, () => setIsMenuOpen(false));
 
   const handleLogout = () => {
     console.log('Logout successful');
@@ -29,22 +30,21 @@ const LoginNavbar = ({ menu }) => {
               <span className="text-slate-700">Rental</span>
             </h1>
           </Link>
-          <h1 className="text-white">{user?.name}</h1>
+          <h1 className="text-white hidden sm:block">{user?.name}</h1>
 
           {/* Burger Menu Button */}
-          <button className="sm:hidden text-2xl" onClick={toggleMenu}>
+          <button className="sm:hidden text-2xl" onClick={() => setIsMenuOpen((prev) => !prev)}>
             {isMenuOpen ? <FaTimes /> : <FaBars />}
           </button>
 
-          {/* Menu items (Responsive with hamburger) */}
-          <ul
-            className={`sm:flex sm:gap-4 ${
-              isMenuOpen ? 'block' : 'hidden'
-            } absolute sm:static left-0 right-0 top-16 bg-gray-800 sm:bg-transparent p-4 sm:p-0 z-10`}
-          >
+          {/* Menu items */}
+          <ul className="hidden sm:flex sm:gap-4">
             {menu.map((item, index) => (
               <Link key={index} to={item.path}>
-                <li className="text-white hover:underline p-2 sm:p-0">{item.name}</li>
+                <li className="text-white hover:underline p-2 sm:p-0 flex items-center gap-2">
+                  <item.Icon />
+                  {item.name}
+                </li>
               </Link>
             ))}
 
@@ -77,6 +77,84 @@ const LoginNavbar = ({ menu }) => {
             </Link>
           </ul>
         </div>
+
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.div
+              ref={menuRef}
+              initial={{ width: 0, opacity: 0 }}
+              animate={{ width: '70%', opacity: 1 }}
+              exit={{ width: 0, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="sm:hidden bg-gray-800 p-4 absolute top-16 right-0 z-10 border-l border-green-600 rounded-l-lg"
+            >
+              <ul className="flex flex-col gap-4">
+                {menu.map((item, index) => (
+                  <Link key={index} to={item.path} onClick={() => setIsMenuOpen(false)}>
+                    <motion.li
+                      initial={{ x: 50, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      exit={{ x: 50, opacity: 0 }}
+                      transition={{ delay: 0.1 * index }}
+                      className="text-white hover:bg-green-600 p-2 rounded border border-gray-600 flex items-center gap-2"
+                    >
+                      <item.Icon />
+                      {item.name}
+                    </motion.li>
+                  </Link>
+                ))}
+
+                <Link to="/profile" onClick={() => setIsMenuOpen(false)}>
+                  {user ? (
+                    <div className="flex items-center gap-2 text-white hover:bg-green-600 p-2 rounded border border-gray-600">
+                      <img
+                        className="rounded-full h-7 w-7 object-cover"
+                        src={user.avatar}
+                        alt="profile"
+                      />
+                    </div>
+                  ) : (
+                    <motion.li
+                      initial={{ x: 50, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      exit={{ x: 50, opacity: 0 }}
+                      transition={{ delay: 0.4 }}
+                      className="text-white hover:bg-green-600 p-2 rounded border border-gray-600"
+                    >
+                      Sign In
+                    </motion.li>
+                  )}
+                </Link>
+                {user && (
+                  <motion.li
+                    initial={{ x: 50, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    exit={{ x: 50, opacity: 0 }}
+                    transition={{ delay: 0.5 }}
+                    className="text-white hover:bg-green-600 p-2 rounded border border-gray-600 cursor-pointer"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </motion.li>
+                )}
+
+                <Link to="/mybooking" onClick={() => setIsMenuOpen(false)}>
+                  <motion.li
+                    initial={{ x: 50, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    exit={{ x: 50, opacity: 0 }}
+                    transition={{ delay: 0.6 }}
+                    className="text-white hover:bg-green-600 p-2 rounded border border-gray-600 flex items-center gap-2"
+                  >
+                    <FaShoppingCart />
+                    My Booking
+                  </motion.li>
+                </Link>
+              </ul>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </nav>
     </div>
   );
