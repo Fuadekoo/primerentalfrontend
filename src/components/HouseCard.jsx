@@ -21,7 +21,7 @@ const HouseCard = ({ house }) => {
     };
 
     return (
-        <div className="bg-white pt-2 shadow-md hover:shadow-lg transition-shadow overflow-hidden rounded-lg w-full sm:w-[330px]">
+        <div className="bg-white pt-2 shadow-md hover:shadow-lg  transition-shadow overflow-hidden rounded-lg w-full sm:w-[330px]">
             <Link to={`/booknow/${house.id}`}>
                 <div className="relative h-[320px] sm:h-[220px] w-full">
                     {house.images && house.images.length > 0 && (
@@ -76,7 +76,7 @@ const HouseCard = ({ house }) => {
                     <div className="pt-1">
                         <button 
                             color="blue" 
-                            className="w-full transform transition-transform duration-300 hover:scale-105 bg-slate-600 text-white p-1 rounded-sm hover:opacity-750"
+                            className="w-full transform transition-transform duration-300 hover:scale-105 bg-slate-800 text-white p-1 rounded-sm hover:opacity-750  rounded-lg"
                         >
                             More Info
                         </button>

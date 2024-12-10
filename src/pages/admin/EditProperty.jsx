@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axiosInstance from '../../helpers/axiousInstance'; // Import the axios instance
 import { useParams, useNavigate } from 'react-router-dom';
 import { message } from 'antd';
+import { FaTimes } from 'react-icons/fa';
 
 const EditProperty = () => {
   const { id } = useParams();
@@ -50,6 +51,10 @@ const EditProperty = () => {
     setFormData((prev) => ({ ...prev, images: files }));
   };
 
+  const handleRemoveImage = (index) => {
+    setExistingImages((prev) => prev.filter((_, i) => i !== index));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -62,6 +67,9 @@ const EditProperty = () => {
     data.append('type_id', formData.type_id);
     formData.images.forEach((image) => {
       data.append('images[]', image);
+    });
+    existingImages.forEach((image) => {
+      data.append('existing_images[]', image);
     });
 
     try {
@@ -79,7 +87,16 @@ const EditProperty = () => {
         message.error(response.data.message);
       }
     } catch (error) {
-      message.error('Failed to update property.');
+      if (error.response && error.response.data && error.response.data.errors) {
+        const errors = error.response.data.errors;
+        for (const key in errors) {
+          if (errors.hasOwnProperty(key)) {
+            message.error(errors[key][0]);
+          }
+        }
+      } else {
+        message.error('Failed to update property.');
+      }
     } finally {
       setLoading(false);
     }
@@ -151,7 +168,16 @@ const EditProperty = () => {
         />
         <div className="flex flex-wrap gap-2">
           {existingImages.map((image, index) => (
-            <img key={index} src={image} alt={`Property ${index}`} className="w-24 h-24 object-cover rounded" />
+            <div key={index} className="relative">
+              <img src={image} alt={`Property ${index}`} className="w-24 h-24 object-cover rounded" />
+              <button
+                type="button"
+                onClick={() => handleRemoveImage(index)}
+                className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
+              >
+                <FaTimes />
+              </button>
+            </div>
           ))}
         </div>
         <button

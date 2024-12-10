@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Filter from '../components/Filter';
 import Slider from '../components/Slider';
+import ExplorePage from "../pages/ExplorePage";
 
 function Home() {
   return (
@@ -11,6 +12,7 @@ function Home() {
         <Navbar />  
         <Filter />
         <HousesList />
+        <ExplorePage /> 
         <Footer />
     </div>
   );

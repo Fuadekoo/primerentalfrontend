@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { FaSearch } from 'react-icons/fa';
+import { FaSearch, FaUser, FaHome } from 'react-icons/fa';
 import axiosInstance from '../../helpers/axiousInstance'; // Import the axios instance
 import { message } from 'antd';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Loading from '../../components/Loader';
 import { HideLoading, ShowLoading } from '../../redux/alertSlice';
 import { useDispatch } from 'react-redux';
@@ -13,26 +13,26 @@ const AdminNotification = () => {
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
-  const [users, setUsers] = useState({});
-  const [properties, setProperties] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
   const bookingsPerPage = 3; // Adjust this value for the number of bookings per page
   const totalPages = Math.ceil(filteredBookings.length / bookingsPerPage);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const TABS = [
     { label: "All", value: "all" },
     { label: "Pending", value: "pending" },
-    { label: "Done", value: "done" },
+    { label: "approved", value: "approved" },
     { label: "Rejected", value: "rejected" },
   ];
 
   const TABLE_HEAD = [
-    "User",
-    "Property",
+    "User ID",
+    "Property ID",
     "Phone Number",
     "Booked Date",
     "Status",
+    "Actions",
   ];
 
   useEffect(() => {
@@ -50,41 +50,7 @@ const AdminNotification = () => {
       }
     };
 
-    const fetchUsers = async () => {
-      try {
-        dispatch(ShowLoading());
-        const response = await axiosInstance.get('/getUsers');
-        const usersData = response.data.data.reduce((acc, user) => {
-          acc[user.id] = user;
-          return acc;
-        }, {});
-        setUsers(usersData);
-      } catch (error) {
-        message.error('Failed to load users.');
-      } finally {
-        dispatch(HideLoading());
-      }
-    };
-
-    const fetchProperties = async () => {
-      try {
-        dispatch(ShowLoading());
-        const response = await axiosInstance.get('/properties');
-        const propertiesData = response.data.data.reduce((acc, property) => {
-          acc[property.id] = property;
-          return acc;
-        }, {});
-        setProperties(propertiesData);
-      } catch (error) {
-        message.error('Failed to load properties.');
-      } finally {
-        dispatch(HideLoading());
-      }
-    };
-
     fetchBookings();
-    fetchUsers();
-    fetchProperties();
   }, [dispatch]);
 
   useEffect(() => {
@@ -107,8 +73,26 @@ const AdminNotification = () => {
     setFilteredBookings(filtered);
   };
 
-  const handleStatusChange = (e) => {
-    setStatusFilter(e.target.value);
+  const handleStatusChange = async (bookingId, status) => {
+    try {
+      dispatch(ShowLoading());
+      const response = await axiosInstance.put(`/bookings/${bookingId}/status`, { status });
+      if (response.data.success) {
+        message.success(`Booking ${status} successfully.`);
+        setBookings((prev) =>
+          prev.map((booking) =>
+            booking.id === bookingId ? { ...booking, status } : booking
+          )
+        );
+      } else {
+        message.error(response.data.message);
+      }
+    } catch (error) {
+      console.error('Error updating booking status:', error);
+      message.error('Failed to update booking status.');
+    } finally {
+      dispatch(HideLoading());
+    }
   };
 
   const handleSearchChange = (e) => {
@@ -189,39 +173,41 @@ const AdminNotification = () => {
             </tr>
           </thead>
           <tbody>
-            {currentBookings.map((booking) => {
-              const user = users[booking.user_id];
-              const property = properties[booking.property_id];
-              return (
-                <tr key={booking.id} className="cursor-pointer">
-                  <td className="p-2 border-b border-blue-gray-50">
-                    {user ? (
-                      <div className="flex items-center gap-2">
-                        <img src={user.avatar} alt={user.name} className="rounded-full h-10 w-10 object-cover" />
-                        <div className="flex flex-col">
-                          <span className="text-sm font-normal text-blue-gray-600">{user.name}</span>
-                          <span className="text-sm font-normal text-blue-gray-400">{user.email}</span>
-                        </div>
-                      </div>
-                    ) : (
-                      'Loading...'
-                    )}
-                  </td>
-                  <td className="p-2 border-b border-blue-gray-50">
-                    {property ? (
-                      <Link to={`/property/${property.id}`} className="text-blue-500 hover:underline">
-                        {property.title}
-                      </Link>
-                    ) : (
-                      'Loading...'
-                    )}
-                  </td>
-                  <td className="p-2 border-b border-blue-gray-50">{booking.phone_number}</td>
-                  <td className="p-2 border-b border-blue-gray-50">{new Date(booking.created_at).toLocaleDateString()}</td>
-                  <td className="p-2 border-b border-blue-gray-50">{booking.status}</td>
-                </tr>
-              );
-            })}
+            {currentBookings.map((booking) => (
+              <tr key={booking.id} className="cursor-pointer">
+                <td className="p-2 border-b border-blue-gray-50">
+                  <FaUser
+                    className="text-xl text-blue-500 cursor-pointer"
+                    onClick={() => navigate(`/user/${booking.user_id}`)}
+                  />
+                  <span className="ml-2">{booking.user_id}</span>
+                </td>
+                <td className="p-2 border-b border-blue-gray-50">
+                  <FaHome
+                    className="text-xl text-blue-500 cursor-pointer"
+                    onClick={() => navigate(`/property-detail/${booking.property_id}`)}
+                  />
+                  <span className="ml-2">{booking.property_id}</span>
+                </td>
+                <td className="p-2 border-b border-blue-gray-50">{booking.phone_number}</td>
+                <td className="p-2 border-b border-blue-gray-50">{new Date(booking.created_at).toLocaleDateString()}</td>
+                <td className="p-2 border-b border-blue-gray-50">{booking.status}</td>
+                <td className="p-2 border-b border-blue-gray-50">
+                  <button
+                    className="bg-green-500 text-white px-2 py-1 rounded mr-2"
+                    onClick={() => handleStatusChange(booking.id, 'approved')}
+                  >
+                    Verify
+                  </button>
+                  <button
+                    className="bg-red-500 text-white px-2 py-1 rounded"
+                    onClick={() => handleStatusChange(booking.id, 'rejected')}
+                  >
+                    Reject
+                  </button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

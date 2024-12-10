@@ -119,7 +119,7 @@ const Contacts = () => {
                 ></textarea>
                 {errors.project && <span className="text-red-500">{errors.project}</span>}
               </div>
-              <button className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200">
+              <button className="bg-slate-800 text-white py-2 px-4 rounded-md hover:bg-green-700 transition duration-200">
                 Send Message
               </button>
               <ToastContainer />

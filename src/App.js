@@ -29,6 +29,8 @@ import PropertyDetail from "./pages/admin/PropertyDetail"
 import CustomerNotification from "./pages/customer/CustomerNotification"
 import Contacts from "./pages/Contacts"
 import About from "./pages/About"
+import Explore from "./pages/Explore"
+import ExplorePage from "./pages/ExplorePage"
 
 function App() {
   const {Loading} = useSelector(state=>state.alerts)
@@ -66,6 +68,8 @@ function App() {
     <Route path="/contact" element={<PublicRoute><Contacts/></PublicRoute>}/>
     <Route path="/Register" element={<PublicRoute><Register/></PublicRoute>}/>
     <Route path="/about" element={<PublicRoute><About/></PublicRoute>}/>
+    <Route path="/Explore" element={<PublicRoute><Explore/></PublicRoute>}/>
+    <Route path="/ExplorePage" element={<PublicRoute><ExplorePage/></PublicRoute>}/>
     <Route path="/" element={<PublicRoute><Home/></PublicRoute>}/>
     <Route path="/myhome" element={<ProtectedRoute><AuthHome/></ProtectedRoute>}/>
     <Route path="/Login" element={<PublicRoute><Login/></PublicRoute>}/>

@@ -2,10 +2,14 @@ import React from "react";
 import { motion } from "framer-motion";
 import hero1 from "../images/hero_bg_1.jpg"
 import hero2 from "../images/hero_bg_2.jpg"
+import Navbar from "../components/Navbar"
+import MyCampany from "./MyCompany"
+import Footer from "../components/Footer"
 
 function About() {
   return (
     <div className="bg-gray-50">
+      <Navbar />
       {/* Header Section */}
       <header className="bg-white py-4 shadow-md">
         <div className="container mx-auto px-4">
@@ -55,12 +59,13 @@ function About() {
               venenatis erat id nunc suscipit, a bibendum risus facilisis. Sed
               vehicula nisi nec felis tincidunt, sit amet posuere erat aliquet.
             </p>
-            <button className="px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition duration-300">
+            <button className="px-6 py-2 bg-slate-800 text-white font-semibold rounded-lg hover:bg-green-700 transition duration-300">
               Learn More
             </button>
           </motion.div>
         </div>
       </section>
+      <MyCampany />
 
       {/* Why Us Section */}
       <section className="py-16 bg-white">
@@ -93,6 +98,8 @@ function About() {
           </div>
         </div>
       </section>
+      
+      <Footer />
     </div>
   );
 }
