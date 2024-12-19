@@ -55,20 +55,10 @@ const Navbar = () => {
               <li className="text-white hover:underline p-2 sm:p-0">About</li>
             </Link>
 
-            <Link to="/profile">
-              {user ? (
-                <div className="flex items-center gap-2">
-                  <img className="rounded-full h-7 w-7 object-cover" src={user.avatar} alt="profile" />
-                </div>
-              ) : (
-                <li className="text-white hover:underline p-2 sm:p-0">Sign In</li>
-              )}
+            <Link to="/">
+            <li className="text-white hover:underline p-2 sm:p-0">Sign In</li>
             </Link>
-            {user && (
-              <li className="text-white hover:underline p-2 sm:p-0 cursor-pointer" onClick={handleLogout}>
-                Logout
-              </li>
-            )}
+            
 
             <Link to="/mybooking">
               <li className="text-white hover:underline p-2 sm:p-0 m-2 hover:text-red-600">

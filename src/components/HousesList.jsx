@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { FaSearch } from 'react-icons/fa';
-import axiosInstance from '../helpers/axiousInstance'; // Correct import
+import axiosInstance from '../helpers/axiousInstance';
 import HouseCard from './HouseCard';
 import { message } from 'antd';
+import homePhoto from '../images/hero_bg_1.jpg'
 
 const HousesList = () => {
   const [houses, setHouses] = useState([]);
@@ -10,77 +11,139 @@ const HousesList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [activeTab, setActiveTab] = useState('all'); // Tab state
+  const [homeTypes, setHomeTypes] = useState([]);
+  const [selectedHomeType, setSelectedHomeType] = useState('');
 
-  const fetchHouses = async (searchTerm = '') => {
+  const TABS = [
+    { label: "All", value: "all" },
+    { label: "Rent", value: "rent" },
+    { label: "Sell", value: "sell" },
+  ];
+
+  // Fetch all houses
+  const fetchHouses = async () => {
     try {
-      const response = await axiosInstance.get('/getproperty', {
-        params: { searchTerm }
-      });
+      const response = await axiosInstance.get('/getproperty');
       setHouses(response.data);
       setFilteredHouses(response.data);
     } catch (err) {
       setError('Failed to fetch houses');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchHouses();
-  }, []);
-
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      const response = await axiosInstance.get('/getproperty', {
-        params: { searchTerm }
-      });
-      setFilteredHouses(response.data);
-    } catch (error) {
-      console.error("Error fetching houses:", error);
       message.error("Error fetching houses");
     } finally {
       setLoading(false);
     }
   };
 
+  // Fetch home types
+  const fetchHomeTypes = async () => {
+    try {
+      const response = await axiosInstance.get('/hometypesearch');
+      setHomeTypes(response.data);
+    } catch (err) {
+      message.error("Error fetching home types");
+    }
+  };
+
   useEffect(() => {
-    setFilteredHouses(houses.filter(house =>
-      (house.title && house.title.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (house.location && house.location.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (house.description && house.description.toLowerCase().includes(searchTerm.toLowerCase()))
-    ));
-  }, [searchTerm, houses]);
+    fetchHouses();
+    fetchHomeTypes();
+  }, []);
 
-  if (loading) {
-    return <div className="text-center mt-10">Loading...</div>;
-  }
+  // Combined filter logic
+  useEffect(() => {
+    let filtered = houses;
 
-  if (error) {
-    return <div className="text-center mt-10 text-red-500">{error}</div>;
-  }
+    if (activeTab !== 'all') {
+      filtered = filtered.filter(house => house.offer_type.toLowerCase() === activeTab);
+    }
+
+    if (searchTerm) {
+      filtered = filtered.filter(house =>
+        (house.title && house.title.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (house.location && house.location.toLowerCase().includes(searchTerm.toLowerCase()))
+      );
+    }
+
+    if (selectedHomeType) {
+      filtered = filtered.filter(house => house.type_id === parseInt(selectedHomeType));
+    }
+
+    setFilteredHouses(filtered);
+  }, [activeTab, searchTerm, selectedHomeType, houses]);
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    // Direct filtering is handled in useEffect
+  };
 
   return (
-    <div className="container mx-auto p-4">
-      <form onSubmit={handleSearch} className="mb-4">
-        <div className="flex items-center bg-slate-100 p-1 rounded-lg">
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search houses..."
-            className="bg-transparent focus:outline-none w-24 sm:w-64"
-          />
-          <button type="submit">
-            <FaSearch className="text-slate-600" />
-          </button>
+    <div className="h-full w-full mt-1">
+      <div  className="relative bg-cover bg-center h-[400px] flex items-center justify-center rounded-xl"
+       style={{ backgroundImage:homePhoto }}>
+        <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
+          {/* TABS */}
+          <div className="w-full md:w-auto flex gap-2">
+            {TABS.map(({ label, value }) => (
+              <button
+                key={value}
+                className={`px-4 py-2 rounded ${activeTab === value ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'}`}
+                onClick={() => setActiveTab(value)}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+
+          {/* HOME TYPE DROPDOWN */}
+          <div className="w-full md:w-72 mt-4 md:mt-0">
+            <select
+              value={selectedHomeType}
+              onChange={(e) => setSelectedHomeType(e.target.value)}
+              className="bg-slate-100 p-2 rounded-lg w-full"
+            >
+              <option value="">Select Home Type</option>
+              {homeTypes.map((homeType) => (
+                <option key={homeType.id} value={homeType.id}>
+                  {homeType.home_type}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* SEARCH BAR */}
+          <div className="w-full md:w-72 mt-4 md:mt-0">
+            <form onSubmit={handleSearch} className="bg-slate-100 p-2 rounded-lg flex items-center">
+              <input
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                type="text"
+                placeholder="Search by title or location..."
+                className="bg-transparent focus:outline-none w-full"
+              />
+              <button type="submit">
+                <FaSearch className="text-slate-600" />
+              </button>
+            </form>
+          </div>
+
+          
         </div>
-      </form>
+      </div>
+
+      {/* HOUSES LIST */}
       <div className="flex p-2 flex-wrap justify-center gap-6 overflow-y-auto h-70">
-        {filteredHouses.map((house) => (
-          <HouseCard key={house.id} house={house} />
-        ))}
+        {loading ? (
+          <p>Loading...</p>
+        ) : error ? (
+          <p className="text-red-500">{error}</p>
+        ) : filteredHouses.length === 0 ? (
+          <p>No houses found</p>
+        ) : (
+          filteredHouses.map(house => (
+            <HouseCard key={house.id} house={house} />
+          ))
+        )}
       </div>
     </div>
   );

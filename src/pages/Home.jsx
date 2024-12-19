@@ -9,8 +9,7 @@ import ExplorePage from "../pages/ExplorePage";
 function Home() {
   return (
     <div>
-        <Navbar />  
-        <Filter />
+        <Navbar /> 
         <HousesList />
         <ExplorePage /> 
         <Footer />

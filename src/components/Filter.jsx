@@ -10,7 +10,7 @@ const Filter = ({ onSearch }) => {
   useEffect(() => {
     const fetchListingTypes = async () => {
       try {
-        const response = await axiosInstance.get('/hometypes'); // Adjust the endpoint as necessary
+        const response = await axiosInstance.get('/hometypesearch'); // Adjust the endpoint as necessary
         setListingTypes(response.data);
       } catch (error) {
         console.error('Error fetching listing types:', error);

@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axiosInstance from '../../helpers/axiousInstance';
 import { message } from 'antd';
 import { usePopper } from 'react-popper';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { FaChevronLeft, FaChevronRight,FaChevronDown } from 'react-icons/fa';
 
 const BookNow = () => {
   const { id } = useParams();
@@ -13,6 +13,7 @@ const BookNow = () => {
   const [feedback, setFeedback] = useState('');
   const [rating, setRating] = useState(5);
   const [showWidget, setShowWidget] = useState(false);
+  const [showBookingForm, setShowBookingForm] = useState(false); // State to control booking form visibility
   const [referenceElement, setReferenceElement] = useState(null);
   const [popperElement, setPopperElement] = useState(null);
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -165,53 +166,56 @@ const BookNow = () => {
             Status: {property.status ? 'Active' : 'Not Active'}
           </p>
           <button
-            onClick={() => setShowWidget(!showWidget)}
-            className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+            onClick={() => setShowBookingForm(!showBookingForm)}
+            className="bg-slate-800 text-white px-4 py-2 rounded-lg hover:bg-green-800"
           >
-            Book House
+            Next 
+          <FaChevronDown className="inline-block ml-2" />
           </button>
         </div>
       </div>
 
       {/* Booking Form */}
-      <div className="bg-white shadow-lg rounded-lg p-4 mt-4">
-        <h2 className="text-xl font-bold mb-4">Book this House</h2>
-        <form onSubmit={handleBookingSubmit}>
-          <div className="mb-4">
-            <label htmlFor="phone" className="block text-gray-700 font-bold mb-2">
-              Phone Number
-            </label>
-            <input
-              type="text"
-              id="phone"
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-              className="w-full p-2 border border-gray-400 rounded-md"
-              placeholder="Enter your phone number"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="description" className="block text-gray-700 font-bold mb-2">
-              Description
-            </label>
-            <textarea
-              id="description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              className="w-full p-2 border border-gray-400 rounded-md"
-              placeholder="Enter additional details"
-              required
-            ></textarea>
-          </div>
-          <button
-            type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
-          >
-            Submit Booking
-          </button>
-        </form>
-      </div>
+      {showBookingForm && (
+        <div className="bg-white shadow-lg rounded-lg p-4 mt-4">
+          <h2 className="text-xl font-bold mb-4">Book this House</h2>
+          <form onSubmit={handleBookingSubmit}>
+            <div className="mb-4">
+              <label htmlFor="phone" className="block text-gray-700 font-bold mb-2">
+                Phone Number
+              </label>
+              <input
+                type="text"
+                id="phone"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                className="w-full p-2 border border-gray-400 rounded-md"
+                placeholder="Enter your phone number"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="description" className="block text-gray-700 font-bold mb-2">
+                Description
+              </label>
+              <textarea
+                id="description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                className="w-full p-2 border border-gray-400 rounded-md"
+                placeholder="Enter additional details"
+                required
+              ></textarea>
+            </div>
+            <button
+              type="submit"
+              className="bg-slate-800 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+            >
+              Submit Booking
+            </button>
+          </form>
+        </div>
+      )}
 
       <button
         onClick={() => setShowWidget(!showWidget)}

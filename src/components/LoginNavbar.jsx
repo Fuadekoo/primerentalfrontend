@@ -1,9 +1,10 @@
 import React, { useState, useRef } from 'react';
-import { FaBars, FaTimes, FaShoppingCart } from 'react-icons/fa';
+import { FaBars,FaUser, FaTimes, FaShoppingCart } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useClickAway } from 'react-use';
+import profileImage from "../images/profile.png";
 
 const LoginNavbar = ({ menu }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false); // To toggle burger menu
@@ -53,7 +54,7 @@ const LoginNavbar = ({ menu }) => {
                 <div className="flex items-center gap-2">
                   <img
                     className="rounded-full h-7 w-7 object-cover"
-                    src={user.avatar}
+                    src={profileImage}
                     alt="profile"
                   />
                 </div>
@@ -108,11 +109,8 @@ const LoginNavbar = ({ menu }) => {
                 <Link to="/profile" onClick={() => setIsMenuOpen(false)}>
                   {user ? (
                     <div className="flex items-center gap-2 text-white hover:bg-green-600 p-2 rounded border border-gray-600">
-                      <img
-                        className="rounded-full h-7 w-7 object-cover"
-                        src={user.avatar}
-                        alt="profile"
-                      />
+                      <FaUser className="mr-2" />
+                      profile
                     </div>
                   ) : (
                     <motion.li
