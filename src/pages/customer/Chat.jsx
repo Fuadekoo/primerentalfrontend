@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Pusher from 'pusher-js';
 import axiosInstance from '../../helpers/axiousInstance';
 
 const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
+  const messagesEndRef = useRef(null); // Reference to the end of the messages
 
   const userId = localStorage.getItem('user_id'); // Logged-in user ID
   const adminId = 1; // Assuming admin ID is 1
@@ -14,6 +15,7 @@ const Chat = () => {
     try {
       const response = await axiosInstance.get('/messages/for-user');
       setMessages(response.data.data || []); // Ensure messages is an array
+      scrollToBottom(); // Scroll to the bottom after fetching messages
     } catch (error) {
       console.error('Error fetching messages:', error);
     }
@@ -30,12 +32,18 @@ const Chat = () => {
     const channel = pusher.subscribe('message-channel');
     channel.bind('message-event', (data) => {
       setMessages((prevMessages) => [...prevMessages, data]);
+      scrollToBottom(); // Scroll to the bottom when a new message is received
     });
 
     return () => {
       pusher.unsubscribe('message-channel');
     };
   }, []);
+
+  // Scroll to the bottom of the messages
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   // Send a new message
   const sendMessage = async () => {
@@ -53,6 +61,7 @@ const Chat = () => {
         };
         setMessages((prevMessages) => [...prevMessages, newMessage]);
         setMessage(''); // Clear the input field
+        scrollToBottom(); // Scroll to the bottom after sending a message
       } else {
         alert('Failed to send message');
       }
@@ -60,6 +69,10 @@ const Chat = () => {
       console.error('Error sending message:', error);
     }
   };
+
+  useEffect(() => {
+    scrollToBottom(); // Scroll to the bottom when messages change
+  }, [messages]);
 
   return (
     <div className="flex flex-col h-screen bg-gray-100">
@@ -81,6 +94,7 @@ const Chat = () => {
             </p>
           </div>
         ))}
+        <div ref={messagesEndRef} />
       </div>
 
       {/* Input Field */}
@@ -99,6 +113,14 @@ const Chat = () => {
           Send
         </button>
       </div>
+
+      {/* Scroll to Bottom Button */}
+      <button
+        className="fixed bottom-4 right-4 bg-blue-500 text-white p-2 rounded-full shadow-lg"
+        onClick={scrollToBottom}
+      >
+        ↓
+      </button>
     </div>
   );
 };

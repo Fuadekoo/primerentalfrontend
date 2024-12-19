@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import Pusher from 'pusher-js';
 import axiosInstance from "../../helpers/axiousInstance";
@@ -7,6 +7,7 @@ const ReplyChat = () => {
   const { userId } = useParams(); // Get user ID from the URL
   const [messages, setMessages] = useState([]); // Messages between admin and user
   const [replyMessage, setReplyMessage] = useState(""); // Admin's reply message
+  const messagesEndRef = useRef(null); // Reference to the end of the messages
 
   // Fetch messages between admin and the selected user
   const fetchMessages = async () => {
@@ -38,6 +39,11 @@ const ReplyChat = () => {
     };
   }, [userId]);
 
+  // Scroll to the bottom of the messages
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   // Handle reply submission
   const handleReply = async () => {
     if (replyMessage.trim() === "") {
@@ -57,6 +63,7 @@ const ReplyChat = () => {
         };
         setMessages((prevMessages) => [...prevMessages, newMessage]);
         setReplyMessage(""); // Clear the input field
+        scrollToBottom(); // Scroll to the bottom after sending a message
       } else {
         alert("Failed to send reply.");
       }
@@ -64,6 +71,10 @@ const ReplyChat = () => {
       console.error("Error sending reply:", error);
     }
   };
+
+  useEffect(() => {
+    scrollToBottom(); // Scroll to the bottom when messages change
+  }, [messages]);
 
   return (
     <div className="flex flex-col h-screen bg-gray-100">
@@ -85,6 +96,7 @@ const ReplyChat = () => {
             </p>
           </div>
         ))}
+        <div ref={messagesEndRef} />
       </div>
 
       {/* Input Field */}
@@ -103,6 +115,14 @@ const ReplyChat = () => {
           Send
         </button>
       </div>
+
+      {/* Scroll to Bottom Button */}
+      <button
+        className="fixed bottom-4 right-4 bg-blue-500 text-white p-2 rounded-full shadow-lg"
+        onClick={scrollToBottom}
+      >
+        ↓
+      </button>
     </div>
   );
 };
