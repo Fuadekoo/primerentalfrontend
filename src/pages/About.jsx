@@ -4,6 +4,7 @@ import hero1 from "../images/hero_bg_1.jpg"
 import hero2 from "../images/hero_bg_2.jpg"
 import Navbar from "../components/Navbar"
 import MyCampany from "./MyCompany"
+import VideoPlayer from "../components/VideoPlayer";
 import Footer from "../components/Footer"
 
 function About() {
@@ -66,6 +67,7 @@ function About() {
         </div>
       </section>
       <MyCampany />
+      <VideoPlayer /> 
 
       {/* Why Us Section */}
       <section className="py-16 bg-white">

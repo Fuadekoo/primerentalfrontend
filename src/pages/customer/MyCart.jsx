@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axiosInstance from '../../helpers/axiousInstance';
 import { Card, Spin, message } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
+import Swal from 'sweetalert2';
 
 const MyCart = () => {
   const [bookings, setBookings] = useState([]);
@@ -19,13 +20,25 @@ const MyCart = () => {
   };
 
   const handleDelete = async (id) => {
-    try {
-      await axiosInstance.delete(`/bookings/${id}`);
-      message.success('Booking deleted successfully');
-      fetchBookings(); // Refresh the bookings list
-    } catch (error) {
-      message.error('Error deleting booking');
-    }
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axiosInstance.delete(`/bookings/${id}`);
+          message.success('Booking deleted successfully');
+          fetchBookings(); // Refresh the bookings list
+        } catch (error) {
+          message.error('Error deleting booking');
+        }
+      }
+    });
   };
 
   useEffect(() => {

@@ -61,7 +61,7 @@ const HouseCard = ({ house }) => {
             </>
           )}
           <div
-            className={`absolute top-2 left-2 px-2 py-1 rounded text-white font-bold ${
+            className={`absolute top-2 left-2 px-4 py-1 rounded-2xl text-white font-serif ${
               house.offer_type === 'For Rent' ? 'bg-red-500' : 'bg-green-500'
             }`}
           >

@@ -3,17 +3,22 @@ import { FaSearch } from 'react-icons/fa';
 import axiosInstance from '../helpers/axiousInstance';
 import HouseCard from './HouseCard';
 import { message } from 'antd';
-import homePhoto from '../images/hero_bg_1.jpg'
+import homePhoto from '../images/hero_bg_1.jpg';
+import noData from '../images/nodatafound.png';
+import Loading from './Loader';
+import { HideLoading, ShowLoading } from '../redux/alertSlice';
+import { useDispatch } from 'react-redux';
 
 const HousesList = () => {
   const [houses, setHouses] = useState([]);
   const [filteredHouses, setFilteredHouses] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false); // Add loading state
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTab, setActiveTab] = useState('all'); // Tab state
   const [homeTypes, setHomeTypes] = useState([]);
   const [selectedHomeType, setSelectedHomeType] = useState('');
+  const dispatch = useDispatch();
 
   const TABS = [
     { label: "All", value: "all" },
@@ -24,6 +29,8 @@ const HousesList = () => {
   // Fetch all houses
   const fetchHouses = async () => {
     try {
+      setLoading(true); // Set loading state
+      dispatch(ShowLoading());
       const response = await axiosInstance.get('/getproperty');
       setHouses(response.data);
       setFilteredHouses(response.data);
@@ -31,7 +38,8 @@ const HousesList = () => {
       setError('Failed to fetch houses');
       message.error("Error fetching houses");
     } finally {
-      setLoading(false);
+      dispatch(HideLoading());
+      setLoading(false); // Unset loading state
     }
   };
 
@@ -79,15 +87,18 @@ const HousesList = () => {
 
   return (
     <div className="h-full w-full mt-1">
-      <div  className="relative bg-cover bg-center h-[400px] flex items-center justify-center rounded-xl"
-       style={{ backgroundImage:homePhoto }}>
+      <div
+        className="relative bg-cover bg-center h-[400px] flex flex-col items-center justify-center rounded-xl"
+        style={{ backgroundImage: `url(${homePhoto})` }}
+      >
+        <h1 className="text-white text-4xl font-bold mb-4"><span className='text-black'>Discover</span> <span className='text-red-800'>Dream Home</span></h1>
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
           {/* TABS */}
           <div className="w-full md:w-auto flex gap-2">
             {TABS.map(({ label, value }) => (
               <button
                 key={value}
-                className={`px-4 py-2 rounded ${activeTab === value ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'}`}
+                className={`px-4 py-2 rounded ${activeTab === value ? 'bg-green-700 text-white' : 'bg-gray-200 text-gray-800'}`}
                 onClick={() => setActiveTab(value)}
               >
                 {label}
@@ -126,24 +137,17 @@ const HousesList = () => {
               </button>
             </form>
           </div>
-
-          
         </div>
       </div>
 
       {/* HOUSES LIST */}
       <div className="flex p-2 flex-wrap justify-center gap-6 overflow-y-auto h-70">
-        {loading ? (
-          <p>Loading...</p>
-        ) : error ? (
-          <p className="text-red-500">{error}</p>
-        ) : filteredHouses.length === 0 ? (
-          <p>No houses found</p>
-        ) : (
-          filteredHouses.map(house => (
-            <HouseCard key={house.id} house={house} />
-          ))
-        )}
+        {loading && <Loading />}
+        {!loading && error && <p className="text-red-500">{error}</p>}
+        {!loading && filteredHouses.length === 0 && <p>No houses found</p>}
+        {!loading && filteredHouses.length > 0 && filteredHouses.map(house => (
+          <HouseCard key={house.id} house={house} />
+        ))}
       </div>
     </div>
   );

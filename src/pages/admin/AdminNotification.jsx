@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import Loading from '../../components/Loader';
 import { HideLoading, ShowLoading } from '../../redux/alertSlice';
 import { useDispatch } from 'react-redux';
+import Swal from 'sweetalert2';
 
 const AdminNotification = () => {
   const [bookings, setBookings] = useState([]);
@@ -74,25 +75,37 @@ const AdminNotification = () => {
   };
 
   const handleStatusChange = async (bookingId, status) => {
-    try {
-      dispatch(ShowLoading());
-      const response = await axiosInstance.put(`/bookings/${bookingId}/status`, { status });
-      if (response.data.success) {
-        message.success(`Booking ${status} successfully.`);
-        setBookings((prev) =>
-          prev.map((booking) =>
-            booking.id === bookingId ? { ...booking, status } : booking
-          )
-        );
-      } else {
-        message.error(response.data.message);
+    Swal.fire({
+      title: `Are you sure you want to ${status} this booking?`,
+      text: `This booking will be ${status}.`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: `Yes, ${status} it!`
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          dispatch(ShowLoading());
+          const response = await axiosInstance.put(`/bookings/${bookingId}/status`, { status });
+          if (response.data.success) {
+            message.success(`Booking ${status} successfully.`);
+            setBookings((prev) =>
+              prev.map((booking) =>
+                booking.id === bookingId ? { ...booking, status } : booking
+              )
+            );
+          } else {
+            message.error(response.data.message);
+          }
+        } catch (error) {
+          console.error('Error updating booking status:', error);
+          message.error('Failed to update booking status.');
+        } finally {
+          dispatch(HideLoading());
+        }
       }
-    } catch (error) {
-      console.error('Error updating booking status:', error);
-      message.error('Failed to update booking status.');
-    } finally {
-      dispatch(HideLoading());
-    }
+    });
   };
 
   const handleSearchChange = (e) => {

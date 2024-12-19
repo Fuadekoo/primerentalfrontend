@@ -6,6 +6,7 @@ import { message } from 'antd';
 import Loading from '../../components/Loader';
 import { HideLoading, ShowLoading } from '../../redux/alertSlice';
 import { useDispatch } from 'react-redux';
+import Swal from 'sweetalert2';
 
 const AdminUsers = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -51,25 +52,38 @@ const AdminUsers = () => {
   };
 
   const handleBlockUnblock = async (userId, isBlocked) => {
-    try {
-      setLoading(true); // Set loading state
-      dispatch(ShowLoading());
-      await axiosInstance.put(`/toggleBlockUser/${userId}/block`, { isBlocked: !isBlocked });
-      const response = await axiosInstance.get('/getUsers');
-      setUsers(response.data);
+    Swal.fire({
+      title: `Are you sure you want to ${isBlocked ? 'unblock' : 'block'} this user?`,
+      text: `This user will be ${isBlocked ? 'unblocked' : 'blocked'}.`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: `Yes, ${isBlocked ? 'unblock' : 'block'} it!`
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          setLoading(true); // Set loading state
+          dispatch(ShowLoading());
+          await axiosInstance.put(`/toggleBlockUser/${userId}/block`, { isBlocked: !isBlocked });
+          const response = await axiosInstance.get('/getUsers');
+          setUsers(response.data);
 
-      const updatedBlockStatus = {};
-      response.data.forEach(user => {
-        updatedBlockStatus[user.id] = user.isBlocked;
-      });
-      setBlockStatus(updatedBlockStatus);
-    } catch (error) {
-      console.error("Error updating block status:", error);
-      message.error("Error updating block status");
-    } finally {
-      dispatch(HideLoading());
-      setLoading(false); // Unset loading state
-    }
+          const updatedBlockStatus = {};
+          response.data.forEach(user => {
+            updatedBlockStatus[user.id] = user.isBlocked;
+          });
+          setBlockStatus(updatedBlockStatus);
+          message.success(`User ${isBlocked ? 'unblocked' : 'blocked'} successfully`);
+        } catch (error) {
+          console.error("Error updating block status:", error);
+          message.error("Error updating block status");
+        } finally {
+          dispatch(HideLoading());
+          setLoading(false); // Unset loading state
+        }
+      }
+    });
   };
 
   useEffect(() => {

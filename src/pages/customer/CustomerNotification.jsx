@@ -1,26 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import axiosInstance from '../../helpers/axiousInstance'; // Import the axios instance
 import { message } from 'antd';
+import Loading from '../../components/Loader';
+import { HideLoading, ShowLoading } from '../../redux/alertSlice';
+import { useDispatch } from 'react-redux';
 
 function CustomerNotification() {
   const [bookings, setBookings] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false); // Add loading state
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchBookings = async () => {
       try {
+        setLoading(true);
+        dispatch(ShowLoading());
         const response = await axiosInstance.get('/bookings/mybookings');
         const approvedBookings = response.data.bookings.filter(booking => booking.status === 'approved');
         setBookings(approvedBookings);
       } catch (error) {
         message.error('Failed to load bookings.');
       } finally {
+        dispatch(HideLoading());
         setLoading(false);
       }
     };
 
     fetchBookings();
-  }, []);
+  }, [dispatch]);
 
   const isToday = (date) => {
     const today = new Date();
@@ -33,7 +40,7 @@ function CustomerNotification() {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   return (
@@ -52,7 +59,7 @@ function CustomerNotification() {
               <p className="text-gray-700 mb-2">Phone Number: {booking.phone_number}</p>
               <p className="text-gray-700 mb-2">Description: {booking.description}</p>
               <p className="text-gray-700 mb-2">Status: {booking.status}</p>
-              <p className="text-gray-700 mb-2">booked Date: {new Date(booking.created_at).toLocaleDateString()}</p>
+              <p className="text-gray-700 mb-2">Booked Date: {new Date(booking.created_at).toLocaleDateString()}</p>
               <p className="text-gray-700 mb-2">Approved Date: {new Date(booking.updated_at).toLocaleDateString()}</p>
             </div>
           ))}

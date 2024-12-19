@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form, message } from 'antd';
 import { Link } from 'react-router-dom';
 import axiosInstance from '../helpers/axiousInstance'; // Correct import
@@ -11,6 +11,7 @@ import keyhouse from '../images/keyhouse.jpg';
 const Register = () => {
   const navigate = useNavigate(); 
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false); // Add loading state
 
   const onFinish = async (values) => {
     const { name, email, password, password_confirmation } = values;
@@ -20,10 +21,11 @@ const Register = () => {
     }
 
     try {
-
+      setLoading(true); // Set loading state
       dispatch(ShowLoading());
       const response = await axiosInstance.post("/register", { name, email, password, password_confirmation });
       dispatch(HideLoading());
+      setLoading(false); // Unset loading state
       if (response.data.success) {
         message.success(response.data.message);
         navigate("/login");
@@ -32,6 +34,7 @@ const Register = () => {
       }
     } catch (error) {
       dispatch(HideLoading());
+      setLoading(false); // Unset loading state
       message.error(error.message);
     }
   };
@@ -79,8 +82,9 @@ const Register = () => {
               <button
                 className='bg-slate-700 text-white p-2 rounded-lg uppercase hover:opacity-95 disabled:opacity-80'
                 type='submit'
+                disabled={loading} // Disable button when loading
               >
-                Register
+                {loading ? 'Registering...' : 'Register'}
               </button>
             </Form>
             <div className='flex gap-1 mt-1'>

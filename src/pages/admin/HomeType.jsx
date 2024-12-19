@@ -6,6 +6,7 @@ import Loading from '../../components/Loader';
 import { HideLoading, ShowLoading } from '../../redux/alertSlice';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const HomeType = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -42,21 +43,33 @@ const HomeType = () => {
   };
 
   const handleDelete = async (homeTypeId) => {
-    try {
-      setLoading(true); // Set loading state
-      dispatch(ShowLoading());
-      await axiosInstance.delete(`/hometypes/${homeTypeId}`);
-      const response = await axiosInstance.get('/hometypes');
-      setHomeTypes(response.data);
-      setFilteredHomeTypes(response.data);
-      message.success("Home type deleted successfully");
-    } catch (error) {
-      console.error("Error deleting home type:", error);
-      message.error("Error deleting home type");
-    } finally {
-      dispatch(HideLoading());
-      setLoading(false); // Unset loading state
-    }
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          setLoading(true); // Set loading state
+          dispatch(ShowLoading());
+          await axiosInstance.delete(`/hometypes/${homeTypeId}`);
+          const response = await axiosInstance.get('/hometypes');
+          setHomeTypes(response.data);
+          setFilteredHomeTypes(response.data);
+          message.success("Home type deleted successfully");
+        } catch (error) {
+          console.error("Error deleting home type:", error);
+          message.error("Error deleting home type");
+        } finally {
+          dispatch(HideLoading());
+          setLoading(false); // Unset loading state
+        }
+      }
+    });
   };
 
   useEffect(() => {

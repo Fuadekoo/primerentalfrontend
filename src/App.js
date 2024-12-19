@@ -23,7 +23,7 @@ import AddProperty from "./pages/admin/AddProperty";
 import BookNow from "./pages/customer/BookNow";
 import EditProperty from "./pages/admin/EditProperty"
 import AdminNotification from "./pages/admin/AdminNotification"
-import Chat from "./components/Chat"; 
+import Chat from "./pages/customer/Chat"; 
 import AdminChat from "./components/AdminChat";
 import PropertyDetail from "./pages/admin/PropertyDetail"
 import CustomerNotification from "./pages/customer/CustomerNotification"
@@ -31,6 +31,8 @@ import Contacts from "./pages/Contacts"
 import About from "./pages/About"
 import Explore from "./pages/Explore"
 import ExplorePage from "./pages/ExplorePage"
+import AdminChatList from "./pages/admin/AdminChatList"
+import ReplyChat from "./pages/admin/ReplyChat";
 
 function App() {
   const {Loading} = useSelector(state=>state.alerts)
@@ -50,8 +52,11 @@ function App() {
     <Route path="/add-property" element={<ProtectedRoute><AddProperty/></ProtectedRoute>}/>
     <Route path="/edit-property/:id" element={<ProtectedRoute><EditProperty/></ProtectedRoute>}/>
     <Route path="/property-detail/:id" element={<ProtectedRoute><PropertyDetail/></ProtectedRoute>}/>
-    <Route path="/admin/chat" element={<ProtectedRoute><ChatReply/></ProtectedRoute>}/>
+    {/* <Route path="/admin/chat" element={<ProtectedRoute><ChatReply/></ProtectedRoute>}/> */}
     <Route path="/admin/notification" element={<ProtectedRoute><AdminNotification/></ProtectedRoute>}/>
+    <Route path="/reply-chat/:userId" element={<ProtectedRoute><ReplyChat /></ProtectedRoute>} />
+    <Route path="/admin/chat" element={<ProtectedRoute><AdminChatList /></ProtectedRoute>} />
+
 
      
 

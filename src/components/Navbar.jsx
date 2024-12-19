@@ -55,7 +55,7 @@ const Navbar = () => {
               <li className="text-white hover:underline p-2 sm:p-0">About</li>
             </Link>
 
-            <Link to="/">
+            <Link to="/login">
             <li className="text-white hover:underline p-2 sm:p-0">Sign In</li>
             </Link>
             
