@@ -14,16 +14,12 @@ const AdminChatList = () => {
         const data = response.data.data;
 
         // Process the response data to extract user information and latest message
-        const processedUsers = Object.keys(data).map((userId) => {
-          const messages = data[userId];
-          const latestMessage = messages[messages.length - 1];
-          return {
-            id: latestMessage.sender.id,
-            email: latestMessage.sender.email,
-            profile_photo: latestMessage.sender.avatar,
-            latest_message: latestMessage.message,
-          };
-        });
+        const processedUsers = data.map((item) => ({
+          id: item.sender_id,
+          email: item.sender_email,
+          latest_message: item.message,
+          created_at: item.created_at,
+        }));
 
         setUsers(processedUsers);
       } catch (error) {
@@ -48,15 +44,13 @@ const AdminChatList = () => {
           className="flex items-center p-3 cursor-pointer hover:bg-gray-200"
           onClick={() => handleUserClick(user.id)}
         >
-          <img
-            src={user.profile_photo || 'default-avatar.png'} // Use a default avatar if none is provided
-            alt={user.email}
-            className="w-12 h-12 rounded-full mr-3"
-          />
           <div>
             <p className="font-semibold">{user.email}</p>
             <p className="text-sm text-gray-600 truncate">
               {user.latest_message}
+            </p>
+            <p className="text-xs text-gray-500 mt-1">
+              {new Date(user.created_at).toLocaleString()}
             </p>
           </div>
         </div>
