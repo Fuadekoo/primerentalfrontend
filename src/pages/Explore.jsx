@@ -10,9 +10,9 @@ const Explore = () => {
         <h1 className="text-2xl font-bold mb-4">Explore</h1>
         <div className="bg-white shadow-lg rounded-lg overflow-hidden p-4">
           <iframe
-            src="https://docs.google.com/forms/d/e/1FAIpQLSd8E6H4PH0sWzCPAL6nou-Kno_YAJ4Tp-jNARGEAEzL1EE1yw/viewform?embedded=true"
-            width="100%"
-            height="1593"
+            src="https://docs.google.com/forms/d/e/1FAIpQLScD23KyrhMEsaX7xtYVNcw-_FkEE04qsyIwIqD73YWcOyH8xw/viewform?embedded=true"
+            width="640"
+            height="1277"
             frameBorder="0"
             marginHeight="0"
             marginWidth="0"
@@ -22,7 +22,7 @@ const Explore = () => {
           </iframe>
         </div>
       </div>
-        <Footer />  
+      <Footer />
     </div>
   );
 };

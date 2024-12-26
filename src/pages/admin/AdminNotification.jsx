@@ -191,7 +191,7 @@ const AdminNotification = () => {
                 <td className="p-2 border-b border-blue-gray-50">
                   <FaUser
                     className="text-xl text-blue-500 cursor-pointer"
-                    onClick={() => navigate(`/user/${booking.user_id}`)}
+                    onClick={() => navigate(`/reply-chat/${booking.user_id}`)}
                   />
                   <span className="ml-2">{booking.user_id}</span>
                 </td>

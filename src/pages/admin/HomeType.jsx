@@ -73,16 +73,21 @@ const HomeType = () => {
   };
 
   useEffect(() => {
-    const fetchHomeTypes = async () => {
+    const fetchHomeTypes = async (retryCount = 3) => {
+      dispatch(ShowLoading());
+      setLoading(true);
       try {
-        setLoading(true); // Set loading state
-        dispatch(ShowLoading());
-        const response = await axiosInstance.get('/hometypes');
+        const response = await axiosInstance.get(`/hometypes?searchTerm=${searchTerm}`);
         setHomeTypes(response.data);
-        setFilteredHomeTypes(response.data); // Initialize filtered home types
+        setFilteredHomeTypes(response.data);
+        setCurrentPage(1); // Reset to first page on new search
       } catch (error) {
-        console.error("Error fetching home types:", error);
-        message.error("Error fetching home types");
+        if (retryCount > 0) {
+          setTimeout(() => fetchHomeTypes(retryCount - 1), 1000); // Retry after 1 second
+        } else {
+          console.error("Error fetching home types:", error);
+          message.error("Error fetching home types");
+        }
       } finally {
         dispatch(HideLoading());
         setLoading(false); // Unset loading state

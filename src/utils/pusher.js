@@ -1,6 +1,6 @@
 import Pusher from 'pusher-js';
 
-const pusher = new Pusher('ffc1213c9bb622bea8b8', {
+const pusher = new Pusher('af0bfeece7846ee91ec9', {
   cluster: 'ap2',
     encrypted: true,
 });

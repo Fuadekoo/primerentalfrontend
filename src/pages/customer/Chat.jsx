@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Pusher from 'pusher-js';
 import axiosInstance from '../../helpers/axiousInstance';
+import { message as antdMessage } from 'antd';
 
 const Chat = () => {
   const [messages, setMessages] = useState([]);
@@ -18,6 +19,7 @@ const Chat = () => {
       scrollToBottom(); // Scroll to the bottom after fetching messages
     } catch (error) {
       console.error('Error fetching messages:', error);
+      antdMessage.error('Error fetching messages');
     }
   };
 
@@ -25,7 +27,7 @@ const Chat = () => {
     fetchMessages();
 
     // Initialize Pusher
-    const pusher = new Pusher('ffc1213c9bb622bea8b8', {
+    const pusher = new Pusher('af0bfeece7846ee91ec9', {
       cluster: 'ap2',
     });
 
@@ -63,10 +65,13 @@ const Chat = () => {
         setMessage(''); // Clear the input field
         scrollToBottom(); // Scroll to the bottom after sending a message
       } else {
-        alert('Failed to send message');
+        // antdMessage.error('Failed to send message');
+        setMessage('');
       }
     } catch (error) {
       console.error('Error sending message:', error);
+      antdMessage.error('Error sending message');
+      setMessage('');
     }
   };
 
@@ -107,7 +112,7 @@ const Chat = () => {
           onChange={(e) => setMessage(e.target.value)}
         />
         <button
-          className="ml-2 bg-blue-500 text-white p-2 rounded-lg"
+          className="ml-2 bg-slate-800 text-white p-2 rounded-lg hover:bg-green-800"
           onClick={sendMessage}
         >
           Send
@@ -116,7 +121,7 @@ const Chat = () => {
 
       {/* Scroll to Bottom Button */}
       <button
-        className="fixed bottom-4 right-4 bg-blue-500 text-white p-2 rounded-full shadow-lg"
+        className="fixed bottom-4 right-4 bg-slate-900 text-white p-2 rounded-full shadow-lg"
         onClick={scrollToBottom}
       >
         ↓

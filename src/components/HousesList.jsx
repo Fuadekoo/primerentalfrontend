@@ -43,13 +43,17 @@ const HousesList = () => {
     }
   };
 
-  // Fetch home types
-  const fetchHomeTypes = async () => {
+  // Fetch home types with retry mechanism
+  const fetchHomeTypes = async (retryCount = 3) => {
     try {
       const response = await axiosInstance.get('/hometypesearch');
       setHomeTypes(response.data);
     } catch (err) {
-      message.error("Error fetching home types");
+      if (retryCount > 0) {
+        setTimeout(() => fetchHomeTypes(retryCount - 1), 1000); // Retry after 1 second
+      } else {
+        message.error("Error fetching home types");
+      }
     }
   };
 

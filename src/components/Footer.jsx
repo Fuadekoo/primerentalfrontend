@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FaFacebookF, FaTelegram, FaInstagram, FaYoutube } from 'react-icons/fa';
+import { FaTelegram, FaInstagram, FaYoutube,FaTiktok } from 'react-icons/fa';
 
 const Footer = () => {
   return (
@@ -16,16 +16,16 @@ const Footer = () => {
             <p>&copy; 2024 PrimeRental. All rights reserved.</p>
           </div>
           <div className="flex space-x-4">
-            <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white">
-              <FaFacebookF />
+            <a href="https://www.tiktok.com/@prime_rental" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white">
+              <FaTiktok />
             </a>
-            <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white">
+            <a href="https://t.me/Rental_house" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white">
               <FaTelegram />
             </a>
-            <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white">
+            <a href="https://www.instagram.com/@prime_rental" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white">
               <FaInstagram />
             </a>
-            <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white">
+            <a href="https://www.linkedin.com/prime_rental" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white">
               <FaYoutube />
             </a>
           </div>

@@ -215,7 +215,7 @@ const AdminUsers = () => {
                   <tr key={id}>
                     <td className={classes}>
                       <div className="flex items-center gap-1">
-                        <img src={avatar} alt={name} className='rounded-full h-10 w-10 object-cover' />
+                        
                         <div className="flex flex-col">
                           <span className="text-sm font-normal text-blue-gray-600">
                             {name}

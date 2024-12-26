@@ -25,7 +25,7 @@ const PropertyManage = () => {
   const TABS = [
     { label: "All", value: "all" },
     { label: "Active Houses", value: "active" },
-    { label: "Rented/Sold Houses", value: "rented_sold" },
+    { label: "Not Active houses", value: "rented_sold" },
   ];
 
   const TABLE_HEAD = [
@@ -240,12 +240,7 @@ const PropertyManage = () => {
                   <tr key={id}>
                     <td className={classes}>
                       <div className="flex items-center gap-1">
-                        <img
-                          src={image}
-                          alt={title}
-                          className="h-10 w-10 object-cover cursor-pointer"
-                          onClick={() => navigate(`/property-detail/${id}`)}
-                        />
+                        
                         <div className="flex flex-col">
                           <span
                             className="text-sm font-normal text-blue-gray-600 cursor-pointer"

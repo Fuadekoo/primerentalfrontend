@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import Pusher from 'pusher-js';
 import axiosInstance from "../../helpers/axiousInstance";
+import { message as antdMessage } from 'antd';
 
 const ReplyChat = () => {
   const { userId } = useParams(); // Get user ID from the URL
@@ -16,6 +17,7 @@ const ReplyChat = () => {
       setMessages(response.data.data || []); // Ensure messages is an array
     } catch (error) {
       console.error("Error fetching messages:", error);
+      antdMessage.error("Error fetching messages");
     }
   };
 
@@ -23,7 +25,7 @@ const ReplyChat = () => {
     fetchMessages();
 
     // Initialize Pusher
-    const pusher = new Pusher('ffc1213c9bb622bea8b8', {
+    const pusher = new Pusher('af0bfeece7846ee91ec9', {
       cluster: 'ap2',
     });
 
@@ -47,7 +49,7 @@ const ReplyChat = () => {
   // Handle reply submission
   const handleReply = async () => {
     if (replyMessage.trim() === "") {
-      alert("Message cannot be empty!");
+      antdMessage.warning("Message cannot be empty!");
       return;
     }
 
@@ -62,13 +64,16 @@ const ReplyChat = () => {
           type: 'sent', // Ensure the type is set correctly
         };
         setMessages((prevMessages) => [...prevMessages, newMessage]);
-        setReplyMessage(""); // Clear the input field
         scrollToBottom(); // Scroll to the bottom after sending a message
       } else {
-        alert("Failed to send reply.");
+        // setMessages('')
+        //antdMessage.error("Failed to send reply.");
       }
     } catch (error) {
       console.error("Error sending reply:", error);
+      antdMessage.error("Error sending reply.");
+    } finally {
+      setReplyMessage(""); // Clear the input field
     }
   };
 
@@ -109,7 +114,7 @@ const ReplyChat = () => {
           onChange={(e) => setReplyMessage(e.target.value)}
         />
         <button
-          className="ml-2 bg-blue-500 text-white p-2 rounded-lg"
+          className="ml-2 bg-slate-800 text-white p-2 rounded-lg hover:bg-green-500"
           onClick={handleReply}
         >
           Send
@@ -118,7 +123,7 @@ const ReplyChat = () => {
 
       {/* Scroll to Bottom Button */}
       <button
-        className="fixed bottom-4 right-4 bg-blue-500 text-white p-2 rounded-full shadow-lg"
+        className="fixed bottom-4 right-4 bg-slate-900 text-white p-2 rounded-full shadow-lg"
         onClick={scrollToBottom}
       >
         ↓

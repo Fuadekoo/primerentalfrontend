@@ -8,12 +8,12 @@ const MyCompany = () => {
     <div className="flex flex-col md:flex-row items-center md:items-start justify-center min-h-screen bg-gray-100 p-6">
       {/* Logo on the Left */}
       <div className="md:w-1/3 flex justify-center mb-6 md:mb-0">
-        <img
-          src="https://via.placeholder.com/200" // Replace with your logo URL
-          alt="Company Logo"
-          className="w-40 h-40 md:w-60 md:h-60 object-contain"
-        />
-      </div>
+      <img
+        src="/logo192.png"
+        alt="Prime Rental Logo"
+        className="h-200 w-200 sm:h-12 sm:w-120"
+      />
+    </div>
 
       {/* Description on the Right */}
       <div className="md:w-2/3 text-center md:text-left">

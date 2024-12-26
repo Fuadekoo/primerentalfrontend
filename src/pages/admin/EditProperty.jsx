@@ -15,6 +15,7 @@ const EditProperty = () => {
     price: '',
     type_id: '',
     images: [],
+    quantity: 1 // Added quantity field with default value 1
   });
   const [existingImages, setExistingImages] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -33,6 +34,7 @@ const EditProperty = () => {
           price: property.price,
           type_id: property.type_id,
           images: [],
+          quantity: property.quantity // Set the quantity from the fetched property
         });
         setExistingImages(property.images);
       })
@@ -65,6 +67,7 @@ const EditProperty = () => {
     data.append('location', formData.location);
     data.append('price', formData.price);
     data.append('type_id', formData.type_id);
+    data.append('quantity', formData.quantity); // Append quantity to the form data
     formData.images.forEach((image) => {
       data.append('images[]', image);
     });
@@ -156,6 +159,17 @@ const EditProperty = () => {
           value={formData.type_id}
           onChange={handleInputChange}
           placeholder="Type ID"
+          className="border p-2 rounded"
+          required
+        />
+        <input
+          type="number"
+          id="quantity"
+          value={formData.quantity}
+          onChange={handleInputChange}
+          placeholder="Quantity"
+          min="1"
+          max="50"
           className="border p-2 rounded"
           required
         />

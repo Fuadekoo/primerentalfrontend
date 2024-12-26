@@ -144,6 +144,8 @@ const PropertyDetail = () => {
           <p className="text-gray-700 mb-4">Location: {property.location}</p>
           <p className="text-gray-700 mb-4">Price: ${property.price}</p>
           <p className="text-gray-700 mb-4">Type: {property.type_id}</p>
+          <p className="text-gray-700 mb-4">quantity : {property.quantity}</p>
+          
           <p className="text-gray-700 mb-4">
             Status: {property.status ? 'Active' : 'Not Active'}
           </p>

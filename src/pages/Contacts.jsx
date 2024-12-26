@@ -40,7 +40,13 @@ const Contacts = () => {
       return; // If the form is not valid, return early
     }
 
-    emailjs.sendForm('service_36g3kls', 'template_sj4fw1ou', form.current, 'IsbUd4NMxkf57mu8p')
+    const formData = {
+      name: form.current.name.value,
+      email: form.current.email.value,
+      project: form.current.project.value,
+    };
+
+    emailjs.send('service_u3hi3gs', 'template_rxyyv74', formData, 'g7nkkRf8lv62395-c')
       .then((result) => {
         setSuccessMessage('Message sent successfully!');
         toast.success("Message sent successfully!");
@@ -56,20 +62,21 @@ const Contacts = () => {
       <Navbar />
       <section className="flex-grow py-16" id="contact">
         <h2 className="text-4xl font-bold text-center mb-4">Get In Touch</h2>
-        <span className="text-xl text-center block mb-8">Contact Me</span>
+        <span className="text-xl text-center block mb-8">Contact Prime Rental</span>
 
         <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="bg-white p-8 rounded-lg shadow-md">
-            <h3 className="text-2xl font-semibold mb-4">Talk To Me</h3>
+            <h3 className="text-2xl font-semibold mb-4">Talk To PrimeRental</h3>
 
             <div className="space-y-4">
               <div className="bg-gray-100 p-4 rounded-lg shadow-sm">
                 <div className="container mx-auto mt-8">
+                  {/* <img src="/pp.png" alt="Prime Rental Logo" className="w-full h-auto rounded-lg shadow-md mb-4" /> */}
                   <img src={contactImage} alt="Contact" className="w-full h-auto rounded-lg shadow-md" />
                 </div>
                 <i className="bx bx-phone text-2xl text-blue-500"></i>
                 <h3 className="text-xl font-semibold mt-2">Phone Number</h3>
-                <span className="text-gray-600">+251-911223344</span>
+                <span className="text-gray-600">+251-933571691</span>
                 <a href="tel:+251910737199" className="text-blue-500 hover:underline mt-2 block">
                   Call To Organization
                 </a>
@@ -77,7 +84,7 @@ const Contacts = () => {
             </div>
           </div>
           <div className="bg-white p-8 rounded-lg shadow-md">
-            <h3 className="text-2xl font-semibold mb-4">Write Me Your Idea</h3>
+            <h3 className="text-2xl font-semibold mb-4">Write Your Idea</h3>
 
             <form ref={form} onSubmit={sendEmail} className="space-y-4">
               {successMessage && <div className="text-green-500 mb-4">{successMessage}</div>}
@@ -87,7 +94,7 @@ const Contacts = () => {
                 </label>
                 <input
                   type="text"
-                  name="from_name"
+                  name="name"
                   id="name"
                   className={`mt-1 block w-full p-2 border rounded-md ${errors.name ? 'border-red-500' : 'border-gray-300'}`}
                   placeholder="Insert your Name"
@@ -100,7 +107,7 @@ const Contacts = () => {
                 </label>
                 <input
                   type="email"
-                  name="from_email"
+                  name="email"
                   id="email"
                   className={`mt-1 block w-full p-2 border rounded-md ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
                   placeholder="Insert your email"
@@ -112,7 +119,7 @@ const Contacts = () => {
                   Project
                 </label>
                 <textarea
-                  name="message"
+                  name="project"
                   id="project"
                   className={`mt-1 block w-full p-2 border rounded-md ${errors.project ? 'border-red-500' : 'border-gray-300'}`}
                   placeholder="Write your project"

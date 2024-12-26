@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axiosInstance from '../../helpers/axiousInstance';
 import { message } from 'antd';
 import { usePopper } from 'react-popper';
-import { FaChevronLeft, FaChevronRight,FaChevronDown } from 'react-icons/fa';
+import { FaChevronLeft, FaChevronRight, FaChevronDown, FaTiktok } from 'react-icons/fa';
 
 const BookNow = () => {
   const { id } = useParams();
@@ -115,7 +115,7 @@ const BookNow = () => {
     <div className="container mx-auto p-4">
       <div className="bg-white shadow-lg rounded-lg overflow-hidden">
         <div className="flex flex-col md:flex-row">
-          <div className="relative h-[320px] sm:h-[220px] md:h-[500px] w-full md:w-1/3">
+          <div className="relative h-[320px] sm:h-[220px] md:h-[500px] w-full md:w-1/2">
             {property.images && property.images.length > 0 && (
               <img
                 src={property.images[currentImageIndex]}
@@ -141,9 +141,18 @@ const BookNow = () => {
             )}
           </div>
           {youtubeEmbedUrl && (
-            <div className="mt-4 md:mt-0 md:ml-4 md:w-2/3">
-              <h2 className="text-xl font-bold mb-4">Property Video</h2>
-              <div className="aspect-w-16 aspect-h-9">
+            <div className="mt-4 md:mt-0 md:ml-4 md:w-1/2">
+              <h2 className="text-xl font-bold mb-4">Property Video {property.tiktok_link && (
+            <a
+              href={property.tiktok_link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ml-4 text-gray-700 hover:text-gray-900"
+            >
+              <FaTiktok size={24} />
+            </a>
+          )}</h2>
+              <div className="h-[320px] sm:h-[220px] md:h-[500px]">
                 <iframe
                   className="w-full h-full"
                   src={youtubeEmbedUrl}
@@ -172,6 +181,7 @@ const BookNow = () => {
             Next 
           <FaChevronDown className="inline-block ml-2" />
           </button>
+
         </div>
       </div>
 

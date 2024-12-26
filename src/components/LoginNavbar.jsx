@@ -26,10 +26,7 @@ const LoginNavbar = ({ menu }) => {
       <nav className="bg-gray-800 p-4 border-b-4 border-green-600">
         <div className="container mx-auto flex justify-between items-center">
           <Link to="/">
-            <h1 className="font-bold text-sm sm:text-xl flex">
-              <span className="text-slate-500">Prime</span>
-              <span className="text-slate-700">Rental</span>
-            </h1>
+          <img src="/pp.png" alt="Prime Rental Logo" className="h-8 sm:h-11" />
           </Link>
           <h1 className="text-white hidden sm:block">{user?.name}</h1>
 
