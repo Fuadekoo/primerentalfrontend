@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from "react-router-dom";
 import { MdLocationOn } from 'react-icons/md';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { FaChevronLeft, FaChevronRight, FaBath, FaBed, FaCar, FaRulerCombined, FaUtensils } from 'react-icons/fa';
 
 const HouseCard = ({ house }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -80,6 +80,26 @@ const HouseCard = ({ house }) => {
           <p className="text-sm text-gray-500">
             Available From : {formatDate(house.updated_at)}
           </p>
+          <div className="flex justify-between items-center text-gray-600 mb-2">
+            <div className="flex items-center">
+              <FaBed className="mr-1" /> {house.bedrooms}
+            </div>
+            <div className="flex items-center">
+              <FaBath className="mr-1" /> {house.bathrooms}
+            </div>
+            <div className="flex items-center">
+              <FaUtensils className="mr-1" /> {house.kitchen}
+            </div>
+            <div className="flex items-center">
+              <FaRulerCombined className="mr-1" /> {house.squaremeters} m²
+            </div>
+            <div className="flex items-center">
+              <FaCar className="mr-1" /> {house.parking}
+            </div>
+          </div>
+          {/* <div className="flex justify-between items-center text-gray-600">
+            
+          </div> */}
           <div className="pt-1">
             <button 
               color="blue" 

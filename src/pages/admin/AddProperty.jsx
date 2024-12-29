@@ -20,7 +20,12 @@ const AddProperty = () => {
         tiktok_link: '',
         offer_type: '', 
         status: 1,
-        quantity: 1 // Added quantity field with default value 1
+        quantity: 1, // Added quantity field with default value 1
+        bathrooms: '', // New field for bathrooms
+        kitchen: '', // New field for kitchen
+        bedrooms: '', // New field for bedrooms
+        squaremeters: '', // New field for square meters
+        parking: '', // New field for parking
     });
     const [homeTypes, setHomeTypes] = useState([]);
     const [loading, setLoading] = useState(false); // Add loading state
@@ -241,6 +246,74 @@ const AddProperty = () => {
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     required
                 />
+            </div>
+            <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="bathrooms">
+                    Bathrooms
+                </label>
+                <input
+                    type="number"
+                    name="bathrooms"
+                    value={property.bathrooms}
+                    onChange={handleChange}
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    required
+                />
+            </div>
+            <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="kitchen">
+                    Kitchen
+                </label>
+                <input
+                    type="number"
+                    name="kitchen"
+                    value={property.kitchen}
+                    onChange={handleChange}
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    required
+                />
+            </div>
+            <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="bedrooms">
+                    Bedrooms
+                </label>
+                <input
+                    type="number"
+                    name="bedrooms"
+                    value={property.bedrooms}
+                    onChange={handleChange}
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    required
+                />
+            </div>
+            <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="squaremeters">
+                    Square Meters
+                </label>
+                <input
+                    type="number"
+                    name="squaremeters"
+                    value={property.squaremeters}
+                    onChange={handleChange}
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    required
+                />
+            </div>
+            <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="parking">
+                    Parking
+                </label>
+                <select
+                    name="parking"
+                    value={property.parking}
+                    onChange={handleChange}
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    required
+                >
+                    <option value="">Select Parking</option>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
             </div>
             <div className="flex items-center justify-between">
                 <button
