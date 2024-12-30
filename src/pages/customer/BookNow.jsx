@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axiosInstance from '../../helpers/axiousInstance';
 import { message } from 'antd';
 import { usePopper } from 'react-popper';
-import { FaChevronLeft, FaChevronRight, FaChevronDown, FaTiktok } from 'react-icons/fa';
+import { FaChevronLeft, FaChevronRight, FaChevronDown, FaTiktok, FaBath, FaBed, FaCar, FaRulerCombined, FaUtensils } from 'react-icons/fa';
 
 const BookNow = () => {
   const { id } = useParams();
@@ -18,6 +18,7 @@ const BookNow = () => {
   const [popperElement, setPopperElement] = useState(null);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [description, setDescription] = useState('');
+  const [typeName, setTypeName] = useState(''); // State to store the type name
   const { styles, attributes } = usePopper(referenceElement, popperElement, {
     modifiers: [{ name: 'offset', options: { offset: [10, 10] } }],
   });
@@ -27,10 +28,20 @@ const BookNow = () => {
     try {
       const response = await axiosInstance.get(`/properties/${id}`);
       setProperty(response.data.property);
+      fetchTypeName(response.data.property.type_id); // Fetch the type name
     } catch (error) {
       message.error('Error fetching property details');
     }
   }, [id]);
+
+  const fetchTypeName = async (typeId) => {
+    try {
+      const response = await axiosInstance.get(`/hometypes/${typeId}`);
+      setTypeName(response.data.home_type);
+    } catch (error) {
+      message.error('Error fetching type name');
+    }
+  };
 
   const fetchFeedbacks = useCallback(async () => {
     try {
@@ -114,8 +125,8 @@ const BookNow = () => {
   return (
     <div className="container mx-auto p-4">
       <div className="bg-white shadow-lg rounded-lg overflow-hidden">
-        <div className="flex flex-col md:flex-row">
-          <div className="relative h-[320px] sm:h-[220px] md:h-[500px] w-full md:w-1/2">
+        <div className="flex flex-col">
+          <div className="relative h-[320px] sm:h-[220px] md:h-[500px] w-full">
             {property.images && property.images.length > 0 && (
               <img
                 src={property.images[currentImageIndex]}
@@ -141,17 +152,17 @@ const BookNow = () => {
             )}
           </div>
           {youtubeEmbedUrl && (
-            <div className="mt-4 md:mt-0 md:ml-4 md:w-1/2">
+            <div className="mt-4">
               <h2 className="text-xl font-bold mb-4">Property Video {property.tiktok_link && (
-            <a
-              href={property.tiktok_link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="ml-4 text-gray-700 hover:text-gray-900"
-            >
-              <FaTiktok size={24} />
-            </a>
-          )}</h2>
+                <a
+                  href={property.tiktok_link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="ml-4 text-gray-700 hover:text-gray-900"
+                >
+                  <FaTiktok size={24} />
+                </a>
+              )}</h2>
               <div className="h-[320px] sm:h-[220px] md:h-[500px]">
                 <iframe
                   className="w-full h-full"
@@ -170,18 +181,34 @@ const BookNow = () => {
           <p className="text-gray-700 mb-4">{property.description}</p>
           <p className="text-gray-700 mb-4">Location: {property.location}</p>
           <p className="text-gray-700 mb-4">Price: ${property.price}</p>
-          <p className="text-gray-700 mb-4">Type: {property.type_id}</p>
+          <p className="text-gray-700 mb-4">Type: {typeName}</p>
           <p className="text-gray-700 mb-4">
             Status: {property.status ? 'Active' : 'Not Active'}
           </p>
+          <div className="flex flex-wrap gap-4 mb-4">
+            <div className="flex items-center text-gray-700">
+              <FaBed className="mr-2 text-xl" /> {property.bedrooms} Bedrooms
+            </div>
+            <div className="flex items-center text-gray-700">
+              <FaBath className="mr-2 text-xl" /> {property.bathrooms} Bathrooms
+            </div>
+            <div className="flex items-center text-gray-700">
+              <FaUtensils className="mr-2 text-xl" /> {property.kitchen} Kitchen
+            </div>
+            <div className="flex items-center text-gray-700">
+              <FaRulerCombined className="mr-2 text-xl" /> {property.squaremeters} m²
+            </div>
+            <div className="flex items-center text-gray-700">
+              <FaCar className="mr-2 text-xl" /> {property.parking} Parking
+            </div>
+          </div>
           <button
             onClick={() => setShowBookingForm(!showBookingForm)}
             className="bg-slate-800 text-white px-4 py-2 rounded-lg hover:bg-green-800"
           >
             Next 
-          <FaChevronDown className="inline-block ml-2" />
+            <FaChevronDown className="inline-block ml-2" />
           </button>
-
         </div>
       </div>
 

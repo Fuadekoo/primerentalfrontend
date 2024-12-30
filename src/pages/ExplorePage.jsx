@@ -28,7 +28,7 @@ const ExplorePage = () => {
       </div>
 
       {/* Section 2 */}
-      <div className="flex flex-col-reverse lg:flex-row items-center lg:items-start gap-6 mb-12">
+      {/* <div className="flex flex-col-reverse lg:flex-row items-center lg:items-start gap-6 mb-12">
         <div className="w-full lg:w-1/2 flex flex-col justify-center">
           <h2 className="text-2xl font-semibold mb-4">Shoot Your Property</h2>
           <p className="text-gray-600 mb-6">
@@ -45,7 +45,7 @@ const ExplorePage = () => {
             className="rounded-lg object-cover w-full h-auto"
           />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

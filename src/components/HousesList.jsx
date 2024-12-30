@@ -16,7 +16,7 @@ const HousesList = () => {
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTab, setActiveTab] = useState('all'); // Tab state
-  const [homeTypes, setHomeTypes] = useState([]);
+  const [homeTypes, setHomeTypes] = useState([]); // Initialize as an empty array
   const [selectedHomeType, setSelectedHomeType] = useState('');
   const dispatch = useDispatch();
 
@@ -32,8 +32,9 @@ const HousesList = () => {
       setLoading(true); // Set loading state
       dispatch(ShowLoading());
       const response = await axiosInstance.get('/getproperty');
-      setHouses(response.data);
-      setFilteredHouses(response.data);
+      const housesData = Array.isArray(response.data) ? response.data : [];
+      setHouses(housesData);
+      setFilteredHouses(housesData);
     } catch (err) {
       setError('Failed to fetch houses');
       message.error("Error fetching houses");
@@ -47,7 +48,8 @@ const HousesList = () => {
   const fetchHomeTypes = async (retryCount = 3) => {
     try {
       const response = await axiosInstance.get('/hometypesearch');
-      setHomeTypes(response.data);
+      const homeTypesData = Array.isArray(response.data) ? response.data : [];
+      setHomeTypes(homeTypesData);
     } catch (err) {
       if (retryCount > 0) {
         setTimeout(() => fetchHomeTypes(retryCount - 1), 1000); // Retry after 1 second
