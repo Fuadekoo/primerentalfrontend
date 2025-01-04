@@ -36,7 +36,7 @@ const BookNow = () => {
 
   const fetchTypeName = async (typeId) => {
     try {
-      const response = await axiosInstance.get(`/hometypes/${typeId}`);
+      const response = await axiosInstance.get(`/myHomeType/${typeId}`);
       setTypeName(response.data.home_type);
     } catch (error) {
       message.error('Error fetching type name');
@@ -129,7 +129,7 @@ const BookNow = () => {
           <div className="relative h-[320px] sm:h-[220px] md:h-[500px] w-full">
             {property.images && property.images.length > 0 && (
               <img
-                src={property.images[currentImageIndex]}
+                src={`http://127.0.0.1:8000/storage/property_images/${property.images[currentImageIndex]}`}
                 alt={`property-image-${currentImageIndex}`}
                 className="h-full w-full object-cover"
               />
