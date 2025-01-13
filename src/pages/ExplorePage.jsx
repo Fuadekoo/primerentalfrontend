@@ -19,7 +19,7 @@ const ExplorePage = () => {
         <div className="w-full lg:w-1/2 flex flex-col justify-center">
           <h2 className="text-2xl font-semibold mb-4">are you ready to sell or rent your home? Get pre-approved</h2>
           <p className="text-gray-600 mb-6">
-            by register your property in this form and add a neccesary information free to rent or sell your home. this is a digital Ethiopia platform that helps you to sell or rent your home.contact prime rental for more information on +251- 911- 11-11-11
+             Register Your Property In This Form and Add a Neccesary Information Free to Rent or Sell Your Home. this is a digital Ethiopia platform that helps you to sell or rent your home.Contact Prime Rental for more information on +251- 933- 57-16-91
           </p>
           <Link to="/explore" className="bg-slate-800 text-white py-2 px-1 rounded-lg hover:bg-green-700 text-center">
             Register Your Property

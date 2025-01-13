@@ -31,7 +31,7 @@ const HousesList = () => {
     try {
       setLoading(true); // Set loading state
       dispatch(ShowLoading());
-      const response = await axiosInstance.get('/getproperty');
+      const response = await axiosInstance.get('/getactiveProperty');
       const housesData = Array.isArray(response.data) ? response.data : [];
       setHouses(housesData);
       setFilteredHouses(housesData);

@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axiosInstance from '../../helpers/axiousInstance';
 import { message } from 'antd';
 import { usePopper } from 'react-popper';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { FaChevronLeft, FaChevronRight, FaBath, FaBed, FaCar, FaRulerCombined, FaUtensils } from 'react-icons/fa';
 
 const PropertyDetail = () => {
   const { id } = useParams();
@@ -34,7 +34,7 @@ const PropertyDetail = () => {
       const response = await axiosInstance.get(`/feedback/${id}`);
       setFeedbacks(response.data.feedback);
     } catch (error) {
-      message.error('Error fetching feedbacks');
+      
     }
   }, [id]);
 
@@ -51,8 +51,6 @@ const PropertyDetail = () => {
       console.error('Error details:', error.response ? error.response.data : error.message);
     }
   };
-
- 
 
   useEffect(() => {
     fetchProperty();
@@ -96,64 +94,74 @@ const PropertyDetail = () => {
   return (
     <div className="container mx-auto p-4">
       <div className="bg-white shadow-lg rounded-lg overflow-hidden">
-        <div className="flex flex-col md:flex-row">
-          <div className="relative h-[320px] sm:h-[220px] md:h-[500px] w-full md:w-1/3">
-            {property.images && property.images.length > 0 && (
-              <img
-                src={property.images[currentImageIndex]}
-                alt={`property-image-${currentImageIndex}`}
-                className="h-full w-full object-cover"
-              />
-            )}
-            {property.images && property.images.length > 1 && (
-              <>
-                <button
-                  onClick={handlePrevImage}
-                  className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-gray-800 text-white p-1 rounded-full"
-                >
-                  <FaChevronLeft />
-                </button>
-                <button
-                  onClick={handleNextImage}
-                  className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-gray-800 text-white p-1 rounded-full"
-                >
-                  <FaChevronRight />
-                </button>
-              </>
-            )}
-          </div>
-          {youtubeEmbedUrl && (
-            <div className="mt-4 md:mt-0 md:ml-4 md:w-2/3">
-              <h2 className="text-xl font-bold mb-4">Property Video</h2>
-              <div className="aspect-w-16 aspect-h-9">
-                <iframe
-                  className="w-full h-full"
-                  src={youtubeEmbedUrl}
-                  title="YouTube video player"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                ></iframe>
-              </div>
-            </div>
+        <div className="relative h-[320px] sm:h-[220px] md:h-[500px] w-full">
+          {property.images && property.images.length > 0 && (
+            <img
+              src={property.images[currentImageIndex]}
+              alt={`property-image-${currentImageIndex}`}
+              className="h-full w-full object-cover"
+            />
+          )}
+          {property.images && property.images.length > 1 && (
+            <>
+              <button
+                onClick={handlePrevImage}
+                className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-gray-800 text-white p-1 rounded-full"
+              >
+                <FaChevronLeft />
+              </button>
+              <button
+                onClick={handleNextImage}
+                className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-gray-800 text-white p-1 rounded-full"
+              >
+                <FaChevronRight />
+              </button>
+            </>
           )}
         </div>
+        {youtubeEmbedUrl && (
+          <div className="mt-4">
+            <h2 className="text-xl font-bold mb-4">Property Video</h2>
+            <div className="h-[320px] sm:h-[220px] md:h-[500px]">
+              <iframe
+                className="w-full h-full"
+                src={youtubeEmbedUrl}
+                title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            </div>
+          </div>
+        )}
         <div className="p-4">
           <h1 className="text-2xl font-bold mb-2">{property.title}</h1>
           <p className="text-gray-700 mb-4">{property.description}</p>
           <p className="text-gray-700 mb-4">Location: {property.location}</p>
           <p className="text-gray-700 mb-4">Price: ${property.price}</p>
           <p className="text-gray-700 mb-4">Type: {property.type_id}</p>
-          <p className="text-gray-700 mb-4">quantity : {property.quantity}</p>
-          
           <p className="text-gray-700 mb-4">
             Status: {property.status ? 'Active' : 'Not Active'}
           </p>
-
+          <div className="flex flex-wrap gap-4 mb-4">
+            <div className="flex items-center text-gray-700">
+              <FaBed className="mr-2 text-xl" /> {property.bedrooms} Bedrooms
+            </div>
+            <div className="flex items-center text-gray-700">
+              <FaBath className="mr-2 text-xl" /> {property.bathrooms} Bathrooms
+            </div>
+            <div className="flex items-center text-gray-700">
+              <FaUtensils className="mr-2 text-xl" /> {property.kitchen} Kitchen
+            </div>
+            <div className="flex items-center text-gray-700">
+              <FaRulerCombined className="mr-2 text-xl" /> {property.squaremeters} m²
+            </div>
+            <div className="flex items-center text-gray-700">
+              <FaCar className="mr-2 text-xl" /> {property.parking} Parking
+            </div>
+          </div>
         </div>
       </div>
-
-
 
       <button
         onClick={() => setShowWidget(!showWidget)}

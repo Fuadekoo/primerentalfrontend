@@ -71,24 +71,24 @@ const HouseCard = ({ house }) => {
         <div className="p-3 flex flex-col gap-2 w-full">
           <p className="truncate text-lg font-semibold text-slate-700">{house.title}</p>
           <div className="flex items-center gap-1">
-            <MdLocationOn className="h-4 w-4 text-green-700" />
+            <MdLocationOn className="h-4 w-4 text-red-700" />
             <p className="text-sm text-gray-600 truncate w-full">{house.location}</p>
           </div>
-          <p className="text-slate-500 mt-2 font-semibold">
-            {house.price.toLocaleString()} ETB/month
+          <p className="text-slate-500 mt-2 font-semibold ">
+            {house.price.toLocaleString()}  {house.currency}/month
           </p>
           <p className="text-sm text-gray-500">
             Available From : {formatDate(house.updated_at)}
           </p>
           <div className="flex justify-between items-center text-gray-600 mb-2">
             <div className="flex items-center">
-              <FaBed className="mr-1" /> {house.bedrooms}
+              <FaBed className="mr-1 text-yellow-400" /> {house.bedrooms}
             </div>
             <div className="flex items-center">
-              <FaBath className="mr-1" /> {house.bathrooms}
+              <FaBath className="mr-1 text-blue-400" /> {house.bathrooms}
             </div>
             <div className="flex items-center">
-              <FaUtensils className="mr-1" /> {house.kitchen}
+              <FaUtensils className="mr-1 text-purple-600" /> {house.kitchen}
             </div>
             <div className="flex items-center">
               <FaRulerCombined className="mr-1" /> {house.squaremeters} m²

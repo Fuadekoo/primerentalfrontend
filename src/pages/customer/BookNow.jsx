@@ -48,7 +48,7 @@ const BookNow = () => {
       const response = await axiosInstance.get(`/feedback/${id}`);
       setFeedbacks(response.data.feedback);
     } catch (error) {
-      message.error('Error fetching feedbacks');
+     
     }
   }, [id]);
 
@@ -129,7 +129,7 @@ const BookNow = () => {
           <div className="relative h-[320px] sm:h-[220px] md:h-[500px] w-full">
             {property.images && property.images.length > 0 && (
               <img
-                src={`http://127.0.0.1:8000/storage/property_images/${property.images[currentImageIndex]}`}
+                src={property.images[currentImageIndex]}
                 alt={`property-image-${currentImageIndex}`}
                 className="h-full w-full object-cover"
               />

@@ -42,7 +42,7 @@ const PropertyManage = () => {
     try {
       setLoading(true); // Set loading state
       dispatch(ShowLoading());
-      const response = await axiosInstance.get(`/getproperty?searchTerm=${searchTerm}`);
+      const response = await axiosInstance.get(`/getallProperty?searchTerm=${searchTerm}`);
       setFilteredProperties(response.data);
       setCurrentPage(1); // Reset to first page on new search
     } catch (error) {
