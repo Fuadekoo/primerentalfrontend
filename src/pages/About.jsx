@@ -1,11 +1,11 @@
 import React from "react";
 import { motion } from "framer-motion";
-import hero1 from "../images/hero_bg_1.jpg"
-import hero2 from "../images/hero_bg_2.jpg"
-import Navbar from "../components/Navbar"
-import MyCampany from "./MyCompany"
+import hero1 from "../images/hero_bg_1.jpg";
+import hero2 from "../images/hero_bg_2.jpg";
+import Navbar from "../components/Navbar";
+import MyCampany from "./MyCompany";
 // import VideoPlayer from "../components/VideoPlayer";
-import Footer from "../components/Footer"
+import Footer from "../components/Footer";
 
 function About() {
   return (
@@ -56,8 +56,17 @@ function About() {
               Property Selling and Renting
             </h2>
             <p className="text-gray-600 leading-relaxed mb-6">
-
-            Prime Rental House Sell and Rent is a comprehensive platform designed to simplify the process of buying, selling, and renting prime residential properties. It connects property owners with potential buyers or tenants, offering features like property listings, virtual tours, price comparisons, and secure transactions. With a focus on prime locations, the platform ensures high-quality listings and caters to individuals seeking luxurious, comfortable, and well-maintained homes. Whether you're looking to sell a property, find your dream home, or rent a house, Prime Rental House Sell and Rent provides a seamless and user-friendly experience.
+              Prime Rental House Sell and Rent is a comprehensive platform
+              designed to simplify the process of buying, selling, and renting
+              prime residential properties. It connects property owners with
+              potential buyers or tenants, offering features like property
+              listings, virtual tours, price comparisons, and secure
+              transactions. With a focus on prime locations, the platform
+              ensures high-quality listings and caters to individuals seeking
+              luxurious, comfortable, and well-maintained homes. Whether you're
+              looking to sell a property, find your dream home, or rent a house,
+              Prime Rental House Sell and Rent provides a seamless and
+              user-friendly experience.
             </p>
             <button className="px-6 py-2 bg-slate-800 text-white font-semibold rounded-lg hover:bg-green-700 transition duration-300">
               Learn More
@@ -69,7 +78,7 @@ function About() {
       {/* <VideoPlayer />  */}
 
       {/* Why Us Section */}
-      <section className="py-16 bg-white">
+      {/* <section className="py-16 bg-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold text-gray-800 mb-6">Why Us</h2>
           <p className="text-gray-600 mb-8">
@@ -98,8 +107,8 @@ function About() {
             ))}
           </div>
         </div>
-      </section>
-      
+      </section> */}
+
       <Footer />
     </div>
   );

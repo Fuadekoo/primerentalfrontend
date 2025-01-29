@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import { FaSearch } from 'react-icons/fa';
-import axiosInstance from '../helpers/axiousInstance';
-import HouseCard from './HouseCard';
-import { message } from 'antd';
-import homePhoto from '../images/hero_bg_1.jpg';
-import noData from '../images/nodatafound.png';
-import Loading from './Loader';
-import { HideLoading, ShowLoading } from '../redux/alertSlice';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import { FaSearch } from "react-icons/fa";
+import axiosInstance from "../helpers/axiousInstance";
+import HouseCard from "./HouseCard";
+import { message } from "antd";
+import homePhoto from "../images/hero.jpg";
+import noData from "../images/nodatafound.png";
+import Loading from "./Loader";
+import { HideLoading, ShowLoading } from "../redux/alertSlice";
+import { useDispatch } from "react-redux";
 
 const HousesList = () => {
   const [houses, setHouses] = useState([]);
   const [filteredHouses, setFilteredHouses] = useState([]);
   const [loading, setLoading] = useState(false); // Add loading state
   const [error, setError] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [activeTab, setActiveTab] = useState('all'); // Tab state
+  const [searchTerm, setSearchTerm] = useState("");
+  const [activeTab, setActiveTab] = useState("all"); // Tab state
   const [homeTypes, setHomeTypes] = useState([]); // Initialize as an empty array
-  const [selectedHomeType, setSelectedHomeType] = useState('');
+  const [selectedHomeType, setSelectedHomeType] = useState("");
   const dispatch = useDispatch();
 
   const TABS = [
@@ -31,12 +31,12 @@ const HousesList = () => {
     try {
       setLoading(true); // Set loading state
       dispatch(ShowLoading());
-      const response = await axiosInstance.get('/getactiveProperty');
+      const response = await axiosInstance.get("/getactiveProperty");
       const housesData = Array.isArray(response.data) ? response.data : [];
       setHouses(housesData);
       setFilteredHouses(housesData);
     } catch (err) {
-      setError('Failed to fetch houses');
+      setError("Failed to fetch houses");
       message.error("Error fetching houses");
     } finally {
       dispatch(HideLoading());
@@ -47,7 +47,7 @@ const HousesList = () => {
   // Fetch home types with retry mechanism
   const fetchHomeTypes = async (retryCount = 3) => {
     try {
-      const response = await axiosInstance.get('/hometypesearch');
+      const response = await axiosInstance.get("/hometypesearch");
       const homeTypesData = Array.isArray(response.data) ? response.data : [];
       setHomeTypes(homeTypesData);
     } catch (err) {
@@ -68,19 +68,26 @@ const HousesList = () => {
   useEffect(() => {
     let filtered = houses;
 
-    if (activeTab !== 'all') {
-      filtered = filtered.filter(house => house.offer_type.toLowerCase() === activeTab);
+    if (activeTab !== "all") {
+      filtered = filtered.filter(
+        (house) => house.offer_type.toLowerCase() === activeTab
+      );
     }
 
     if (searchTerm) {
-      filtered = filtered.filter(house =>
-        (house.title && house.title.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (house.location && house.location.toLowerCase().includes(searchTerm.toLowerCase()))
+      filtered = filtered.filter(
+        (house) =>
+          (house.title &&
+            house.title.toLowerCase().includes(searchTerm.toLowerCase())) ||
+          (house.location &&
+            house.location.toLowerCase().includes(searchTerm.toLowerCase()))
       );
     }
 
     if (selectedHomeType) {
-      filtered = filtered.filter(house => house.type_id === parseInt(selectedHomeType));
+      filtered = filtered.filter(
+        (house) => house.type_id === parseInt(selectedHomeType)
+      );
     }
 
     setFilteredHouses(filtered);
@@ -97,14 +104,21 @@ const HousesList = () => {
         className="relative bg-cover bg-center h-[400px] flex flex-col items-center justify-center rounded-xl"
         style={{ backgroundImage: `url(${homePhoto})` }}
       >
-        <h1 className="text-white text-4xl font-bold mb-4"><span className='text-black'>Discover</span> <span className='text-red-800'>Dream Home</span></h1>
+        <h1 className="text-white text-4xl font-bold mb-4">
+          <span className="text-black">Your prime choice</span>{" "}
+          <span className="text-red-800">for your dream property!</span>
+        </h1>
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
           {/* TABS */}
           <div className="w-full md:w-auto flex gap-2">
             {TABS.map(({ label, value }) => (
               <button
                 key={value}
-                className={`px-4 py-2 rounded ${activeTab === value ? 'bg-green-700 text-white' : 'bg-gray-200 text-gray-800'}`}
+                className={`px-4 py-2 rounded ${
+                  activeTab === value
+                    ? "bg-green-700 text-white"
+                    : "bg-gray-200 text-gray-800"
+                }`}
                 onClick={() => setActiveTab(value)}
               >
                 {label}
@@ -130,7 +144,10 @@ const HousesList = () => {
 
           {/* SEARCH BAR */}
           <div className="w-full md:w-72 mt-4 md:mt-0">
-            <form onSubmit={handleSearch} className="bg-slate-100 p-2 rounded-lg flex items-center">
+            <form
+              onSubmit={handleSearch}
+              className="bg-slate-100 p-2 rounded-lg flex items-center"
+            >
               <input
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -151,9 +168,11 @@ const HousesList = () => {
         {loading && <Loading />}
         {!loading && error && <p className="text-red-500">{error}</p>}
         {!loading && filteredHouses.length === 0 && <p>No houses found</p>}
-        {!loading && filteredHouses.length > 0 && filteredHouses.map(house => (
-          <HouseCard key={house.id} house={house} />
-        ))}
+        {!loading &&
+          filteredHouses.length > 0 &&
+          filteredHouses.map((house) => (
+            <HouseCard key={house.id} house={house} />
+          ))}
       </div>
     </div>
   );
