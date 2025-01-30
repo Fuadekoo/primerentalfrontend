@@ -86,7 +86,7 @@ const Contacts = () => {
                   <img
                     src={contactImage}
                     alt="Contact"
-                    className="w-full h-auto rounded-lg shadow-md w-28 h-28"
+                    className="rounded-lg shadow-md w-40 h-40 mx-auto"
                   />
                 </div>
                 <i className="bx bx-phone text-2xl text-blue-500"></i>
@@ -158,7 +158,7 @@ const Contacts = () => {
                   htmlFor="project"
                   className="block text-lg font-medium text-gray-700"
                 >
-                  Project
+                  Message
                 </label>
                 <textarea
                   name="project"
@@ -166,7 +166,7 @@ const Contacts = () => {
                   className={`mt-1 block w-full p-2 border rounded-md ${
                     errors.project ? "border-red-500" : "border-gray-300"
                   }`}
-                  placeholder="Write your project"
+                  placeholder="Write your message"
                 ></textarea>
                 {errors.project && (
                   <span className="text-red-500">{errors.project}</span>
