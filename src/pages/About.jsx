@@ -8,6 +8,33 @@ import MyCampany from "./MyCompany";
 import Footer from "../components/Footer";
 
 function About() {
+   const features = [
+     {
+       title: "Wide Range of Properties",
+       description:
+         "Explore a wide range of properties that suit your needs and preferences.",
+       image: "path/to/image1.jpg",
+     },
+     {
+       title: "Finest Community",
+       description:
+         "Join a community of like-minded individuals in the finest neighborhoods.",
+       image: "path/to/image2.jpg",
+     },
+     {
+       title: "Investment Opportunities",
+       description:
+         "Discover lucrative investment opportunities in the real estate market.",
+       image: "path/to/image3.jpg",
+     },
+     {
+       title: "Homes That Match",
+       description:
+         "Find homes that match your lifestyle and budget perfectly.",
+       image: "path/to/image4.jpg",
+     },
+   ];
+
   return (
     <div className="bg-gray-50">
       <Navbar />
@@ -78,7 +105,7 @@ function About() {
       {/* <VideoPlayer />  */}
 
       {/* Why Us Section */}
-      {/* <section className="py-16 bg-white">
+      <section className="py-16 bg-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold text-gray-800 mb-6">Why Us</h2>
           <p className="text-gray-600 mb-8">
@@ -86,12 +113,7 @@ function About() {
             encounter any problems, do not hesitate to knock on our agents.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            {[
-              { title: "Wide Range of Properties", icon: "🏠" },
-              { title: "Finest Community", icon: "🌟" },
-              { title: "Investment", icon: "💼" },
-              { title: "Homes That Match", icon: "🏡" },
-            ].map((item, index) => (
+            {features.map((item, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
@@ -99,15 +121,20 @@ function About() {
                 transition={{ duration: 0.5, delay: index * 0.2 }}
                 className="p-6 bg-gray-100 rounded-lg shadow-md hover:shadow-lg hover:scale-105 transition transform"
               >
-                <div className="text-4xl mb-4">{item.icon}</div>
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="w-full h-40 object-cover rounded-lg mb-4"
+                />
                 <h3 className="text-xl font-semibold text-gray-800 mb-2">
                   {item.title}
                 </h3>
+                <p className="text-gray-600">{item.description}</p>
               </motion.div>
             ))}
           </div>
         </div>
-      </section> */}
+      </section>
 
       <Footer />
     </div>
