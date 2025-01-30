@@ -5,7 +5,7 @@ import { FaTelegram, FaInstagram, FaYoutube, FaTiktok } from "react-icons/fa";
 const Footer = () => {
   return (
     <motion.footer
-      className="bg-black text-white py-8 bottom-0 w-full z-10"
+      className="bg-black text-white py-4 bottom-0 w-full z-10"
       initial={{ y: 50, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
@@ -14,15 +14,21 @@ const Footer = () => {
         <div className="flex justify-between items-center">
           <div className="text-gray-400 text-xs">
             <ul className="flex item -skew-x-2 m-2 p-2">
-              <li className="m-2  font-bold ">SignUp</li>
-              <li className="m-2  font-bold ">Login</li>
-              <li className="m-2  font-bold ">Register Property</li>
+              <li className="m-2 font-bold ">
+                <a href="/Register">SignUp</a>
+              </li>
+              <li className="m-2  font-bold ">
+                <a href="/login">Login</a>
+              </li>
+              <li className="m-2 font-bold ">
+                <a href="/">Property</a>
+              </li>
               <li className="m-2  font-bold ">Terms</li>
               <li className="m-2  font-bold ">Privacy</li>
             </ul>
             <p>&copy; 2024 PrimeRental. All rights reserved.</p>
           </div>
-          <div className="flex space-x-4">
+          <div className="flex space-x-4 m-1">
             <a
               href="https://www.tiktok.com/@prime_rental"
               target="_blank"

@@ -38,7 +38,10 @@ const Navbar = () => {
           <h1 className="text-white hidden sm:block">{user?.name}</h1>
 
           {/* Burger Menu Button */}
-          <button className="sm:hidden text-2xl" onClick={toggleMenu}>
+          <button
+            className="sm:hidden text-2xl text-white"
+            onClick={toggleMenu}
+          >
             {isMenuOpen ? <FaTimes /> : <FaBars />}
           </button>
 

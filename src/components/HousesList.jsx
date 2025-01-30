@@ -105,8 +105,10 @@ const HousesList = () => {
         style={{ backgroundImage: `url(${homePhoto})` }}
       >
         <h1 className="text-white text-4xl font-bold mb-4">
-          <span className="text-black">Your prime choice</span>{" "}
-          <span className="text-red-800">for your dream property!</span>
+          <span className="text-black font-extrabold">Your prime choice</span>{" "}
+          <span className="text-black font-extrabold">
+            for your dream property!
+          </span>
         </h1>
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
           {/* TABS */}
