@@ -5,11 +5,27 @@
     <link rel="icon" href="%PUBLIC_URL%/logo1234.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
+    <meta
+      name="keywords"
+      content="prime Addis,rental properties, rent a house, rent an apartment, property rental, house rental, apartment rental, prime rental, Ethiopia , Ethiopia House ,Ethiopia Rent, Ethiopia property"
+    />
+    <meta name="author" content="Prime Rental" />
+    <meta
+      property="og:title"
+      content="Prime Rental - Your Perfect Rental Property"
+    />
+    <meta
+      property="og:description"
+      content="Find your perfect rental property with ease. Browse through a wide range of properties available for rent."
+    />
+    <meta property="og:image" content="%PUBLIC_URL%/images/hero.jpg" />
+    <meta property="og:url" content="http://www.primeaddis.com" />
+
     <!-- In your main HTML file (e.g., index.html) -->
-<meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <meta
       name="description"
-      content="Web site created using create-react-app"
+      content="Prime Rental - Find your perfect rental property with ease. Browse through a wide range of properties available for rent."
     />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <!--
@@ -27,6 +43,21 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>PRIME RENTAL</title>
+      <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Prime Rental",
+      "url": "http://www.primeaddis.com",
+      "logo": "http://www.primeaddis.com/images/logo.png",
+      "sameAs": [
+        "http://www.facebook.com/primerental",
+        "http://www.twitter.com/primerental",
+        "http://www.instagram.com/primerental"
+      ]
+    }
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
