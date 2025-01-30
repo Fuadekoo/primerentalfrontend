@@ -2,38 +2,42 @@ import React from "react";
 import { motion } from "framer-motion";
 import hero1 from "../images/hero_bg_1.jpg";
 import hero2 from "../images/hero_bg_2.jpg";
+import image1 from "../images/image1.png";
+import image2 from "../images/image4.png";
+import image3 from "../images/image3.png";
+import image4 from "../images/image2.png";
 import Navbar from "../components/Navbar";
 import MyCampany from "./MyCompany";
 // import VideoPlayer from "../components/VideoPlayer";
 import Footer from "../components/Footer";
 
 function About() {
-   const features = [
-     {
-       title: "Wide Range of Properties",
-       description:
-         "Explore a wide range of properties that suit your needs and preferences.",
-       image: "path/to/image1.jpg",
-     },
-     {
-       title: "Finest Community",
-       description:
-         "Join a community of like-minded individuals in the finest neighborhoods.",
-       image: "path/to/image2.jpg",
-     },
-     {
-       title: "Investment Opportunities",
-       description:
-         "Discover lucrative investment opportunities in the real estate market.",
-       image: "path/to/image3.jpg",
-     },
-     {
-       title: "Homes That Match",
-       description:
-         "Find homes that match your lifestyle and budget perfectly.",
-       image: "path/to/image4.jpg",
-     },
-   ];
+  const features = [
+    {
+      title: "Wide Range of Properties",
+      description:
+        "We connect property owners and multifamily partners with quality renters and give them the tools they need to fill more vacancies, more quickly.",
+      image: image1,
+    },
+    {
+      title: "Finest Community",
+      description:
+        "Join a community of like-minded individuals in the finest neighborhoods.",
+      image: image2,
+    },
+    {
+      title: "Investment Opportunities",
+      description:
+        "By fostering a safe and respectful renting experience We have a zero-tolerance policy for any form of discrimination and we build products that are accessible to all",
+      image: image3,
+    },
+    {
+      title: "Homes That Match",
+      description:
+        "Prime rental is on a mission to change the way you rent, forever. To make it easier, faster, and more human. By making this vision a reality, we’re creating opportunity for everyone to live better—from one fresh start to the next",
+      image: image4,
+    },
+  ];
 
   return (
     <div className="bg-gray-50">

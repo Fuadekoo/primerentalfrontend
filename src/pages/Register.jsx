@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { HideLoading, ShowLoading } from "../redux/alertSlice";
 import Navbar from "../components/Navbar";
 import keyhouse from "../images/keyhouse.jpg";
+import Footer from "../components/Footer";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -114,14 +115,14 @@ const Register = () => {
                 />
               </Form.Item>
               <button
-                className="bg-slate-700 text-white p-2 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
+                className="bg-slate-700 text-white p-2 rounded-lg uppercase hover:bg-green-600 disabled:opacity-80"
                 type="submit"
                 disabled={loading} // Disable button when loading
               >
                 {loading ? "Registering..." : "Register"}
               </button>
             </Form>
-            <div className="flex gap-1 mt-1">
+            <div className="flex gap-1 mt-4">
               <p>Already have an account?</p>
               <Link to="/Login" className="text-blue-700">
                 Login
@@ -130,6 +131,7 @@ const Register = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

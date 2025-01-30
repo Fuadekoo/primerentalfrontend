@@ -122,11 +122,7 @@ const Navbar = () => {
                 <Link to="/profile" onClick={() => setIsMenuOpen(false)}>
                   {user ? (
                     <div className="flex items-center gap-2 text-white hover:bg-green-600 p-2 rounded border border-gray-600">
-                      <img
-                        className="rounded-full h-7 w-7 object-cover"
-                        src={user.avatar}
-                        alt="profile"
-                      />
+                      Profile
                     </div>
                   ) : (
                     <motion.li

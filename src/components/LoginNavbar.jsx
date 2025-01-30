@@ -36,7 +36,7 @@ const LoginNavbar = ({ menu }) => {
 
           {/* Burger Menu Button */}
           <button
-            className="sm:hidden text-2xl"
+            className="sm:hidden text-2xl text-white"
             onClick={() => setIsMenuOpen((prev) => !prev)}
           >
             {isMenuOpen ? <FaTimes /> : <FaBars />}
