@@ -86,7 +86,7 @@ const Contacts = () => {
                   <img
                     src={contactImage}
                     alt="Contact"
-                    className="w-full h-auto rounded-lg shadow-md w-36 h-36"
+                    className="w-full h-auto rounded-lg shadow-md w-28 h-28"
                   />
                 </div>
                 <i className="bx bx-phone text-2xl text-blue-500"></i>
