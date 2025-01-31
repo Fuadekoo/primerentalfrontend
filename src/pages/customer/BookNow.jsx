@@ -34,6 +34,14 @@ const BookNow = () => {
   });
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
+  // Check if the page has been loaded before
+  useEffect(() => {
+    if (!sessionStorage.getItem("hasLoadedBookNow")) {
+      sessionStorage.setItem("hasLoadedBookNow", "true");
+      window.location.reload();
+    }
+  }, []);
+
   const fetchProperty = useCallback(async () => {
     try {
       const response = await axiosInstance.get(`/properties/${id}`);
