@@ -1,26 +1,36 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import axiosInstance from '../../helpers/axiousInstance';
-import { message } from 'antd';
-import { usePopper } from 'react-popper';
-import { FaChevronLeft, FaChevronRight, FaChevronDown, FaTiktok, FaBath, FaBed, FaCar, FaRulerCombined, FaUtensils } from 'react-icons/fa';
+import React, { useEffect, useState, useCallback } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import axiosInstance from "../../helpers/axiousInstance";
+import { message } from "antd";
+import { usePopper } from "react-popper";
+import {
+  FaChevronLeft,
+  FaChevronRight,
+  FaChevronDown,
+  FaTiktok,
+  FaBath,
+  FaBed,
+  FaCar,
+  FaRulerCombined,
+  FaUtensils,
+} from "react-icons/fa";
 
 const BookNow = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [property, setProperty] = useState(null);
   const [feedbacks, setFeedbacks] = useState([]);
-  const [feedback, setFeedback] = useState('');
+  const [feedback, setFeedback] = useState("");
   const [rating, setRating] = useState(5);
   const [showWidget, setShowWidget] = useState(false);
   const [showBookingForm, setShowBookingForm] = useState(false); // State to control booking form visibility
   const [referenceElement, setReferenceElement] = useState(null);
   const [popperElement, setPopperElement] = useState(null);
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [description, setDescription] = useState('');
-  const [typeName, setTypeName] = useState(''); // State to store the type name
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [description, setDescription] = useState("");
+  const [typeName, setTypeName] = useState(""); // State to store the type name
   const { styles, attributes } = usePopper(referenceElement, popperElement, {
-    modifiers: [{ name: 'offset', options: { offset: [10, 10] } }],
+    modifiers: [{ name: "offset", options: { offset: [10, 10] } }],
   });
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
@@ -30,7 +40,7 @@ const BookNow = () => {
       setProperty(response.data.property);
       fetchTypeName(response.data.property.type_id); // Fetch the type name
     } catch (error) {
-      message.error('Error fetching property details');
+      message.error("Error fetching property details");
     }
   }, [id]);
 
@@ -39,7 +49,7 @@ const BookNow = () => {
       const response = await axiosInstance.get(`/myHomeType/${typeId}`);
       setTypeName(response.data.home_type);
     } catch (error) {
-      message.error('Error fetching type name');
+      message.error("Error fetching type name");
     }
   };
 
@@ -47,22 +57,23 @@ const BookNow = () => {
     try {
       const response = await axiosInstance.get(`/feedback/${id}`);
       setFeedbacks(response.data.feedback);
-    } catch (error) {
-     
-    }
+    } catch (error) {}
   }, [id]);
 
   const handleFeedbackSubmit = async (e) => {
     e.preventDefault();
     try {
       await axiosInstance.post(`/feedback/${id}`, { feedback, rating });
-      setFeedback('');
+      setFeedback("");
       setRating(5);
       fetchFeedbacks();
-      message.success('Feedback submitted successfully');
+      message.success("Feedback submitted successfully");
     } catch (error) {
-      message.error('Error submitting feedback');
-      console.error('Error details:', error.response ? error.response.data : error.message);
+      message.error("Error submitting feedback");
+      console.error(
+        "Error details:",
+        error.response ? error.response.data : error.message
+      );
     }
   };
 
@@ -74,12 +85,15 @@ const BookNow = () => {
         description,
       });
       message.success(response.data.message);
-      setPhoneNumber('');
-      setDescription('');
-      navigate('/cart'); // Redirect to cart page
+      setPhoneNumber("");
+      setDescription("");
+      navigate("/cart"); // Redirect to cart page
     } catch (error) {
-      message.error('Error creating booking');
-      console.error('Error details:', error.response ? error.response.data : error.message);
+      message.error("Error creating booking");
+      console.error(
+        "Error details:",
+        error.response ? error.response.data : error.message
+      );
     }
   };
 
@@ -87,6 +101,12 @@ const BookNow = () => {
     fetchProperty();
     fetchFeedbacks();
   }, [fetchProperty, fetchFeedbacks]);
+
+  useEffect(() => {
+    if (showBookingForm) {
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+    }
+  }, [showBookingForm]);
 
   if (!property) {
     return <div>Loading...</div>;
@@ -108,10 +128,13 @@ const BookNow = () => {
   const getYouTubeEmbedUrl = (url) => {
     try {
       const urlObj = new URL(url);
-      if (urlObj.hostname.includes('youtube.com') && urlObj.searchParams.get('v')) {
-        return `https://www.youtube.com/embed/${urlObj.searchParams.get('v')}`;
+      if (
+        urlObj.hostname.includes("youtube.com") &&
+        urlObj.searchParams.get("v")
+      ) {
+        return `https://www.youtube.com/embed/${urlObj.searchParams.get("v")}`;
       }
-      if (urlObj.hostname.includes('youtu.be')) {
+      if (urlObj.hostname.includes("youtu.be")) {
         return `https://www.youtube.com/embed/${urlObj.pathname.slice(1)}`;
       }
     } catch {
@@ -153,16 +176,19 @@ const BookNow = () => {
           </div>
           {youtubeEmbedUrl && (
             <div className="mt-4">
-              <h2 className="text-xl font-bold mb-4">Property Video {property.tiktok_link && (
-                <a
-                  href={property.tiktok_link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="ml-4 text-gray-700 hover:text-gray-900"
-                >
-                  <FaTiktok size={24} />
-                </a>
-              )}</h2>
+              <h2 className="text-xl font-bold mb-4">
+                Property Video{" "}
+                {property.tiktok_link && (
+                  <a
+                    href={property.tiktok_link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="ml-4 text-gray-700 hover:text-gray-900"
+                  >
+                    <FaTiktok size={24} />
+                  </a>
+                )}
+              </h2>
               <div className="h-[320px] sm:h-[220px] md:h-[500px]">
                 <iframe
                   className="w-full h-full"
@@ -183,7 +209,7 @@ const BookNow = () => {
           <p className="text-gray-700 mb-4">Price: ${property.price}</p>
           <p className="text-gray-700 mb-4">Type: {typeName}</p>
           <p className="text-gray-700 mb-4">
-            Status: {property.status ? 'Active' : 'Not Active'}
+            Status: {property.status ? "Active" : "Not Active"}
           </p>
           <div className="flex flex-wrap gap-4 mb-4">
             <div className="flex items-center text-gray-700">
@@ -196,7 +222,8 @@ const BookNow = () => {
               <FaUtensils className="mr-2 text-xl" /> {property.kitchen} Kitchen
             </div>
             <div className="flex items-center text-gray-700">
-              <FaRulerCombined className="mr-2 text-xl" /> {property.squaremeters} m²
+              <FaRulerCombined className="mr-2 text-xl" />{" "}
+              {property.squaremeters} m²
             </div>
             <div className="flex items-center text-gray-700">
               <FaCar className="mr-2 text-xl" /> {property.parking} Parking
@@ -206,7 +233,7 @@ const BookNow = () => {
             onClick={() => setShowBookingForm(!showBookingForm)}
             className="bg-slate-800 text-white px-4 py-2 rounded-lg hover:bg-green-800"
           >
-            Next 
+            Next
             <FaChevronDown className="inline-block ml-2" />
           </button>
         </div>
@@ -218,7 +245,10 @@ const BookNow = () => {
           <h2 className="text-xl font-bold mb-4">Book this House</h2>
           <form onSubmit={handleBookingSubmit}>
             <div className="mb-4">
-              <label htmlFor="phone" className="block text-gray-700 font-bold mb-2">
+              <label
+                htmlFor="phone"
+                className="block text-gray-700 font-bold mb-2"
+              >
                 Phone Number
               </label>
               <input
@@ -232,7 +262,10 @@ const BookNow = () => {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="description" className="block text-gray-700 font-bold mb-2">
+              <label
+                htmlFor="description"
+                className="block text-gray-700 font-bold mb-2"
+              >
                 Description
               </label>
               <textarea
@@ -275,7 +308,9 @@ const BookNow = () => {
               <div key={index} className="bg-gray-100 p-4 rounded-lg mb-4">
                 <p>{fb.feedback}</p>
                 <p>Rating: {fb.rating}</p>
-                <p className="text-gray-500 text-sm">{new Date(fb.created_at).toLocaleString()}</p>
+                <p className="text-gray-500 text-sm">
+                  {new Date(fb.created_at).toLocaleString()}
+                </p>
               </div>
             ))
           ) : (
