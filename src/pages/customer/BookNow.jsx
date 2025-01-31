@@ -13,6 +13,8 @@ import {
   FaCar,
   FaRulerCombined,
   FaUtensils,
+  FaStar,
+  FaRegStar,
 } from "react-icons/fa";
 
 const BookNow = () => {
@@ -315,7 +317,18 @@ const BookNow = () => {
             feedbacks.map((fb, index) => (
               <div key={index} className="bg-gray-100 p-4 rounded-lg mb-4">
                 <p>{fb.feedback}</p>
-                <p>Rating: {fb.rating}</p>
+                <p>
+                  Rating:{" "}
+                  {Array.from({ length: fb.rating }, (_, i) => (
+                    <FaStar key={i} className="text-yellow-500 inline-block" />
+                  ))}
+                  {Array.from({ length: 5 - fb.rating }, (_, i) => (
+                    <FaRegStar
+                      key={i}
+                      className="text-yellow-500 inline-block"
+                    />
+                  ))}
+                </p>
                 <p className="text-gray-500 text-sm">
                   {new Date(fb.created_at).toLocaleString()}
                 </p>
@@ -334,17 +347,17 @@ const BookNow = () => {
                 className="p-2 h-24 w-full border border-gray-400 rounded-md"
                 placeholder="Leave your feedback"
               ></textarea>
-              <select
-                value={rating}
-                onChange={(e) => setRating(e.target.value)}
-                className="p-2 border border-gray-400 rounded-md"
-              >
+              <div className="flex items-center space-x-1">
                 {[1, 2, 3, 4, 5].map((rate) => (
-                  <option key={rate} value={rate}>
-                    {rate}
-                  </option>
+                  <FaStar
+                    key={rate}
+                    className={`cursor-pointer ${
+                      rate <= rating ? "text-yellow-500" : "text-gray-300"
+                    }`}
+                    onClick={() => setRating(rate)}
+                  />
                 ))}
-              </select>
+              </div>
               <button
                 className="p-2 ml-auto rounded-lg bg-blue-700 hover:bg-blue-600 shadow-md hover:shadow-lg text-white"
                 type="submit"
