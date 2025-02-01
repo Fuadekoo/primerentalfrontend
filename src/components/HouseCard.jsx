@@ -1,7 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { MdLocationOn } from 'react-icons/md';
-import { FaChevronLeft, FaChevronRight, FaBath, FaBed, FaCar, FaRulerCombined, FaUtensils } from 'react-icons/fa';
+import { MdLocationOn } from "react-icons/md";
+import {
+  FaChevronLeft,
+  FaChevronRight,
+  FaBath,
+  FaBed,
+  FaCar,
+  FaRulerCombined,
+  FaUtensils,
+} from "react-icons/fa";
 
 const HouseCard = ({ house }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -21,95 +29,101 @@ const HouseCard = ({ house }) => {
   };
 
   const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const options = { year: "numeric", month: "long", day: "numeric" };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
   return (
     <div className="bg-white pt-2 shadow-md hover:shadow-lg transition-shadow overflow-hidden rounded-lg w-full sm:w-[330px]">
-      <Link to={`/booknow/${house.id}`}>
-        <div className="relative h-[320px] sm:h-[220px] w-full">
-          {house.images && house.images.length > 0 && (
-            <img
-              src={house.images[currentImageIndex]}
-              alt={`house-image-${currentImageIndex}`}
-              className="h-full w-full object-cover hover:scale-105 transition-transform duration-300"
-            />
-          )}
-          {house.images && house.images.length > 1 && (
-            <>
-              <button
-                onClick={handlePrevImage}
-                className="absolute top-1/2 left-2 transform -translate-y-1/2 text-white p-1 rounded-full"
-              >
-                <FaChevronLeft />
-              </button>
-              <button
-                onClick={handleNextImage}
-                className="absolute top-1/2 right-2 transform -translate-y-1/2 text-white p-1 rounded-full"
-              >
-                <FaChevronRight />
-              </button>
-              <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-1">
-                {house.images.map((_, index) => (
-                  <span
-                    key={index}
-                    className={`h-2 w-2 rounded-full ${index === currentImageIndex ? 'bg-white' : 'bg-gray-400'}`}
-                  ></span>
-                ))}
-              </div>
-            </>
-          )}
-          <div
-            className={`absolute top-2 left-2 px-4 py-1 rounded-2xl text-white font-serif ${
-              house.offer_type === 'For Rent' ? 'bg-red-500' : 'bg-green-500'
-            }`}
-          >
-            {house.offer_type}
+      <div className="relative h-[320px] sm:h-[220px] w-full">
+        {house.images && house.images.length > 0 && (
+          <img
+            src={house.images[currentImageIndex]}
+            alt={`house-image-${currentImageIndex}`}
+            className="h-full w-full object-cover hover:scale-105 transition-transform duration-300"
+          />
+        )}
+        {house.images && house.images.length > 1 && (
+          <>
+            <button
+              onClick={handlePrevImage}
+              className="absolute top-1/2 left-2 transform -translate-y-1/2 text-white p-1 rounded-full"
+            >
+              <FaChevronLeft />
+            </button>
+            <button
+              onClick={handleNextImage}
+              className="absolute top-1/2 right-2 transform -translate-y-1/2 text-white p-1 rounded-full"
+            >
+              <FaChevronRight />
+            </button>
+            <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-1">
+              {house.images.map((_, index) => (
+                <span
+                  key={index}
+                  className={`h-2 w-2 rounded-full ${
+                    index === currentImageIndex ? "bg-white" : "bg-gray-400"
+                  }`}
+                ></span>
+              ))}
+            </div>
+          </>
+        )}
+        <div
+          className={`absolute top-2 left-2 px-4 py-1 rounded-2xl text-white font-serif ${
+            house.offer_type === "For Rent" ? "bg-red-500" : "bg-green-500"
+          }`}
+        >
+          {house.offer_type}
+        </div>
+      </div>
+      <div className="p-3 flex flex-col gap-2 w-full">
+        <p className="truncate text-lg font-semibold text-slate-700">
+          {house.title}
+        </p>
+        <div className="flex items-center gap-1">
+          <MdLocationOn className="h-4 w-4 text-red-700" />
+          <p className="text-sm text-gray-600 truncate w-full">
+            {house.location}
+          </p>
+        </div>
+        <p className="text-slate-500 mt-2 font-semibold ">
+          {house.price.toLocaleString()} {house.currency}/month
+        </p>
+        <p className="text-sm text-gray-500">
+          Available From : {formatDate(house.updated_at)}
+        </p>
+        <div className="flex justify-between items-center text-gray-600 mb-2">
+          <div className="flex items-center">
+            <FaBed className="mr-1 text-yellow-400" /> {house.bedrooms}
+          </div>
+          <div className="flex items-center">
+            <FaBath className="mr-1 text-blue-400" /> {house.bathrooms}
+          </div>
+          <div className="flex items-center">
+            <FaUtensils className="mr-1 text-purple-600" /> {house.kitchen}
+          </div>
+          <div className="flex items-center">
+            <FaRulerCombined className="mr-1" /> {house.squaremeters} m²
+          </div>
+          <div className="flex items-center">
+            <FaCar className="mr-1" /> {house.parking}
           </div>
         </div>
-        <div className="p-3 flex flex-col gap-2 w-full">
-          <p className="truncate text-lg font-semibold text-slate-700">{house.title}</p>
-          <div className="flex items-center gap-1">
-            <MdLocationOn className="h-4 w-4 text-red-700" />
-            <p className="text-sm text-gray-600 truncate w-full">{house.location}</p>
-          </div>
-          <p className="text-slate-500 mt-2 font-semibold ">
-            {house.price.toLocaleString()}  {house.currency}/month
-          </p>
-          <p className="text-sm text-gray-500">
-            Available From : {formatDate(house.updated_at)}
-          </p>
-          <div className="flex justify-between items-center text-gray-600 mb-2">
-            <div className="flex items-center">
-              <FaBed className="mr-1 text-yellow-400" /> {house.bedrooms}
-            </div>
-            <div className="flex items-center">
-              <FaBath className="mr-1 text-blue-400" /> {house.bathrooms}
-            </div>
-            <div className="flex items-center">
-              <FaUtensils className="mr-1 text-purple-600" /> {house.kitchen}
-            </div>
-            <div className="flex items-center">
-              <FaRulerCombined className="mr-1" /> {house.squaremeters} m²
-            </div>
-            <div className="flex items-center">
-              <FaCar className="mr-1" /> {house.parking}
-            </div>
-          </div>
-          {/* <div className="flex justify-between items-center text-gray-600">
+        {/* <div className="flex justify-between items-center text-gray-600">
             
           </div> */}
-          <div className="pt-1">
-            <button 
-              color="blue" 
+        <div className="pt-1">
+          <Link to={`/booknow/${house.id}`}>
+            <button
+              color="blue"
               className="w-full transform transition-transform duration-300 hover:scale-105 bg-slate-800 text-white p-1 rounded-sm hover:opacity-750 rounded-lg"
             >
               More Info
             </button>
-          </div>
+          </Link>
         </div>
-      </Link>
+      </div>
     </div>
   );
 };
