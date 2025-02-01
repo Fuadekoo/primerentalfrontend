@@ -26,7 +26,9 @@ const Footer = () => {
               <li className="m-2  font-bold ">
                 <a href="/terms">Terms</a>
               </li>
-              <li className="m-2  font-bold ">Privacy</li>
+              <li className="m-2  font-bold ">
+                <a href="/terms">Privacy</a>
+              </li>
             </ul>
             <p>&copy; 2024 PrimeRental. All rights reserved.</p>
           </div>

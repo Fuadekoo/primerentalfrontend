@@ -73,7 +73,7 @@ function Terms() {
 
             <section className="animate-fadeIn">
               <h2 className="text-3xl font-semibold mb-4 text-blue-500">
-                License
+                General
               </h2>
               <p className="text-lg text-gray-700 leading-relaxed">
                 Terms and Conditions In using this website you are deemed to
@@ -109,11 +109,14 @@ function Terms() {
                 https://primeaddis.com Your Consent By using our site, you
                 consent to our online privacy policy. Changes to our Privacy
                 Policy If we decide to change our privacy policy, we will post
-                those changes on this page. https://primeaddid.com Notice: Our
-                company operates exclusively under the name of Mr. Natnael
-                Yohannes and through the primeaddis.com website. We are not
-                responsible for work done through other websites or through
-                other agents.
+                those changes on this page. https://primeaddis.com
+                <br></br>
+                <p className="p-2 text-red-500">
+                  Notice: Our company operates exclusively under the name of Mr.
+                  Natnael Yohannes and through the primeaddis.com website. We
+                  are not responsible for work done through other websites or
+                  through other agents.
+                </p>
               </p>
             </section>
           </div>
