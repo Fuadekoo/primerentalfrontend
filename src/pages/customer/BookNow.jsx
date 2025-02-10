@@ -231,7 +231,9 @@ const BookNow = () => {
           </div>
           <p className="text-gray-700 mb-4">{property.description}</p>
           <p className="text-gray-700 mb-4">Location: {property.location}</p>
-          <p className="text-gray-700 mb-4">Price: ${property.price}</p>
+          <p className="text-gray-700 mb-4">
+            Price: {property.price} {property.currency}
+          </p>
           <p className="text-gray-700 mb-4">Type: {typeName}</p>
           <p className="text-gray-700 mb-4">
             Status: {property.status ? "Active" : "Not Active"}
