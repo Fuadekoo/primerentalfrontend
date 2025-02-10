@@ -1,22 +1,31 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import axiosInstance from '../../helpers/axiousInstance';
-import { message } from 'antd';
-import { usePopper } from 'react-popper';
-import { FaChevronLeft, FaChevronRight, FaBath, FaBed, FaCar, FaRulerCombined, FaUtensils } from 'react-icons/fa';
+import React, { useEffect, useState, useCallback } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import axiosInstance from "../../helpers/axiousInstance";
+import { message } from "antd";
+import { usePopper } from "react-popper";
+import {
+  FaChevronLeft,
+  FaChevronRight,
+  FaBath,
+  FaBed,
+  FaCar,
+  FaRulerCombined,
+  FaUtensils,
+  FaShareAlt,
+} from "react-icons/fa";
 
 const PropertyDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [property, setProperty] = useState(null);
   const [feedbacks, setFeedbacks] = useState([]);
-  const [feedback, setFeedback] = useState('');
+  const [feedback, setFeedback] = useState("");
   const [rating, setRating] = useState(5);
   const [showWidget, setShowWidget] = useState(false);
   const [referenceElement, setReferenceElement] = useState(null);
   const [popperElement, setPopperElement] = useState(null);
   const { styles, attributes } = usePopper(referenceElement, popperElement, {
-    modifiers: [{ name: 'offset', options: { offset: [10, 10] } }],
+    modifiers: [{ name: "offset", options: { offset: [10, 10] } }],
   });
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
@@ -25,7 +34,7 @@ const PropertyDetail = () => {
       const response = await axiosInstance.get(`/properties/${id}`);
       setProperty(response.data.property);
     } catch (error) {
-      message.error('Error fetching property details');
+      message.error("Error fetching property details");
     }
   }, [id]);
 
@@ -33,22 +42,23 @@ const PropertyDetail = () => {
     try {
       const response = await axiosInstance.get(`/feedback/${id}`);
       setFeedbacks(response.data.feedback);
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }, [id]);
 
   const handleFeedbackSubmit = async (e) => {
     e.preventDefault();
     try {
       await axiosInstance.post(`/feedback/${id}`, { feedback, rating });
-      setFeedback('');
+      setFeedback("");
       setRating(5);
       fetchFeedbacks();
-      message.success('Feedback submitted successfully');
+      message.success("Feedback submitted successfully");
     } catch (error) {
-      message.error('Error submitting feedback');
-      console.error('Error details:', error.response ? error.response.data : error.message);
+      message.error("Error submitting feedback");
+      console.error(
+        "Error details:",
+        error.response ? error.response.data : error.message
+      );
     }
   };
 
@@ -77,10 +87,13 @@ const PropertyDetail = () => {
   const getYouTubeEmbedUrl = (url) => {
     try {
       const urlObj = new URL(url);
-      if (urlObj.hostname.includes('youtube.com') && urlObj.searchParams.get('v')) {
-        return `https://www.youtube.com/embed/${urlObj.searchParams.get('v')}`;
+      if (
+        urlObj.hostname.includes("youtube.com") &&
+        urlObj.searchParams.get("v")
+      ) {
+        return `https://www.youtube.com/embed/${urlObj.searchParams.get("v")}`;
       }
-      if (urlObj.hostname.includes('youtu.be')) {
+      if (urlObj.hostname.includes("youtu.be")) {
         return `https://www.youtube.com/embed/${urlObj.pathname.slice(1)}`;
       }
     } catch {
@@ -90,6 +103,11 @@ const PropertyDetail = () => {
   };
 
   const youtubeEmbedUrl = getYouTubeEmbedUrl(property.youtube_link);
+
+  const handleShare = () => {
+    navigator.clipboard.writeText(`https://primeaddis.com/booknow/${id}`);
+    message.success("URL copied to clipboard!");
+  };
 
   return (
     <div className="container mx-auto p-4">
@@ -135,13 +153,22 @@ const PropertyDetail = () => {
           </div>
         )}
         <div className="p-4">
-          <h1 className="text-2xl font-bold mb-2">{property.title}</h1>
+          <div className="p-4 flex justify-between items-center">
+            <h1 className="text-2xl font-bold mb-2">{property.title}</h1>
+            <button
+              onClick={handleShare}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            >
+              <FaShareAlt className="inline-block mr-2" />
+              Share
+            </button>
+          </div>
           <p className="text-gray-700 mb-4">{property.description}</p>
           <p className="text-gray-700 mb-4">Location: {property.location}</p>
           <p className="text-gray-700 mb-4">Price: ${property.price}</p>
           <p className="text-gray-700 mb-4">Type: {property.type_id}</p>
           <p className="text-gray-700 mb-4">
-            Status: {property.status ? 'Active' : 'Not Active'}
+            Status: {property.status ? "Active" : "Not Active"}
           </p>
           <div className="flex flex-wrap gap-4 mb-4">
             <div className="flex items-center text-gray-700">
@@ -154,7 +181,8 @@ const PropertyDetail = () => {
               <FaUtensils className="mr-2 text-xl" /> {property.kitchen} Kitchen
             </div>
             <div className="flex items-center text-gray-700">
-              <FaRulerCombined className="mr-2 text-xl" /> {property.squaremeters} m²
+              <FaRulerCombined className="mr-2 text-xl" />{" "}
+              {property.squaremeters} m²
             </div>
             <div className="flex items-center text-gray-700">
               <FaCar className="mr-2 text-xl" /> {property.parking} Parking
@@ -184,7 +212,9 @@ const PropertyDetail = () => {
               <div key={index} className="bg-gray-100 p-4 rounded-lg mb-4">
                 <p>{fb.feedback}</p>
                 <p>Rating: {fb.rating}</p>
-                <p className="text-gray-500 text-sm">{new Date(fb.created_at).toLocaleString()}</p>
+                <p className="text-gray-500 text-sm">
+                  {new Date(fb.created_at).toLocaleString()}
+                </p>
               </div>
             ))
           ) : (

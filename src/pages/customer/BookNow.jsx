@@ -15,6 +15,7 @@ import {
   FaUtensils,
   FaStar,
   FaRegStar,
+  FaShareAlt,
 } from "react-icons/fa";
 
 const BookNow = () => {
@@ -155,6 +156,11 @@ const BookNow = () => {
 
   const youtubeEmbedUrl = getYouTubeEmbedUrl(property.youtube_link);
 
+  const handleShare = () => {
+    navigator.clipboard.writeText(window.location.href);
+    message.success("URL copied to clipboard!");
+  };
+
   return (
     <div className="container mx-auto p-4">
       <div className="bg-white shadow-lg rounded-lg overflow-hidden">
@@ -213,7 +219,16 @@ const BookNow = () => {
           )}
         </div>
         <div className="p-4">
-          <h1 className="text-2xl font-bold mb-2">{property.title}</h1>
+          <div className="p-4 flex justify-between items-center">
+            <h1 className="text-2xl font-bold mb-2">{property.title}</h1>
+            <button
+              onClick={handleShare}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            >
+              <FaShareAlt className="inline-block mr-2" />
+              Share
+            </button>
+          </div>
           <p className="text-gray-700 mb-4">{property.description}</p>
           <p className="text-gray-700 mb-4">Location: {property.location}</p>
           <p className="text-gray-700 mb-4">Price: ${property.price}</p>
